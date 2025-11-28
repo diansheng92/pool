@@ -1018,7 +1018,14 @@
             
             // Update button link
             const customButton = document.getElementById('custom-quote-button');
-            customButton.href = `/covers/safety-covers/${shape}-safety-covers/`;
+            // Use real external URL for Lazy-L custom options
+            if (shape === 'lazy-l') {
+                customButton.href = 'https://www.poolsuppliescanada.ca/covers/safety-covers/lazy-l-safety-covers/';
+                customButton.target = '_blank';
+                customButton.rel = 'noopener noreferrer';
+            } else {
+                customButton.href = '#';
+            }
             
             // Show custom message
             document.getElementById('step-custom').classList.add('active');
