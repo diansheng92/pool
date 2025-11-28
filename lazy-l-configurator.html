@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazy-L Pool Cover Configurator - Five Star Pools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0066cc 0%, #004999 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: #5a6268;
+        }
+        
+        .configurator-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .visual-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .visual-section h2 {
+            color: #0066cc;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .pool-diagram {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+        
+        .pool-diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        
+        .dimension-label {
+            font-size: 14px;
+            font-weight: bold;
+            fill: #0066cc;
+        }
+        
+        .options-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .options-section h2 {
+            color: #0066cc;
+            margin-bottom: 1.5rem;
+        }
+        
+        .option-group {
+            margin-bottom: 2rem;
+        }
+        
+        .option-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.1rem;
+        }
+        
+        .option-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        
+        .option-btn {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        
+        .option-btn:hover {
+            border-color: #0066cc;
+            transform: translateY(-2px);
+        }
+        
+        .option-btn.selected {
+            border-color: #0066cc;
+            background: #e8f4ff;
+            font-weight: bold;
+        }
+        
+        .dimension-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group label {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+        }
+        
+        .input-group input {
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+        
+        .summary-section {
+            background: #e8f4ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .summary-section h3 {
+            color: #0066cc;
+            margin-bottom: 1rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-item strong {
+            color: #0066cc;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0052a3;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .info-box {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin-top: 2rem;
+        }
+        
+        .info-box h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-box p {
+            color: #856404;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 968px) {
+            .configurator-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏊 Lazy-L Pool Cover Configurator</h1>
+        <p>Custom configure your Lazy-L shaped pool safety cover</p>
+    </div>
+    
+    <a href="index.html" class="back-link">← Back to Home</a>
+    
+    <div class="container">
+        <div class="configurator-layout">
+            <!-- Visual Diagram Section -->
+            <div class="visual-section">
+                <h2>Pool Shape Diagram</h2>
+                
+                <div class="pool-diagram">
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- L-shaped pool outline -->
+                        <path d="M 50 50 L 350 50 L 350 200 L 200 200 L 200 350 L 50 350 Z" 
+                              fill="#4db8ff" 
+                              stroke="#0066cc" 
+                              stroke-width="3"/>
+                        
+                        <!-- Dimension lines and labels -->
+                        <!-- Length A (top) -->
+                        <line x1="50" y1="30" x2="350" y2="30" stroke="#ff6b6b" stroke-width="2" marker-end="url(#arrowred)"/>
+                        <line x1="50" y1="25" x2="50" y2="35" stroke="#ff6b6b" stroke-width="2"/>
+                        <line x1="350" y1="25" x2="350" y2="35" stroke="#ff6b6b" stroke-width="2"/>
+                        <text x="200" y="20" text-anchor="middle" class="dimension-label" fill="#ff6b6b">Length A</text>
+                        
+                        <!-- Width B (right side top) -->
+                        <line x1="370" y1="50" x2="370" y2="200" stroke="#4ecdc4" stroke-width="2"/>
+                        <line x1="365" y1="50" x2="375" y2="50" stroke="#4ecdc4" stroke-width="2"/>
+                        <line x1="365" y1="200" x2="375" y2="200" stroke="#4ecdc4" stroke-width="2"/>
+                        <text x="380" y="130" class="dimension-label" fill="#4ecdc4">Width B</text>
+                        
+                        <!-- Length C (bottom section) -->
+                        <line x1="50" y1="370" x2="200" y2="370" stroke="#ffa500" stroke-width="2"/>
+                        <line x1="50" y1="365" x2="50" y2="375" stroke="#ffa500" stroke-width="2"/>
+                        <line x1="200" y1="365" x2="200" y2="375" stroke="#ffa500" stroke-width="2"/>
+                        <text x="125" y="390" text-anchor="middle" class="dimension-label" fill="#ffa500">Length C</text>
+                        
+                        <!-- Width D (left side) -->
+                        <line x1="30" y1="50" x2="30" y2="350" stroke="#9b59b6" stroke-width="2"/>
+                        <line x1="25" y1="50" x2="35" y2="50" stroke="#9b59b6" stroke-width="2"/>
+                        <line x1="25" y1="350" x2="35" y2="350" stroke="#9b59b6" stroke-width="2"/>
+                        <text x="15" y="205" class="dimension-label" fill="#9b59b6" transform="rotate(-90 15 205)">Width D</text>
+                        
+                        <!-- Arrow markers -->
+                        <defs>
+                            <marker id="arrowred" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0,0 10,5 0,10" fill="#ff6b6b"/>
+                            </marker>
+                        </defs>
+                        
+                        <!-- Corner indicator -->
+                        <circle cx="200" cy="200" r="8" fill="#ff6b6b" opacity="0.7"/>
+                        <text x="210" y="195" font-size="12" fill="#ff6b6b">Corner</text>
+                    </svg>
+                </div>
+                
+                <div class="info-box">
+                    <h4>📏 Measurement Guide</h4>
+                    <p><strong>Length A:</strong> Full length of the long section<br>
+                    <strong>Width B:</strong> Width of the top section<br>
+                    <strong>Length C:</strong> Length of the bottom section<br>
+                    <strong>Width D:</strong> Full width of the pool</p>
+                </div>
+            </div>
+            
+            <!-- Configuration Options Section -->
+            <div class="options-section">
+                <h2>Configure Your Cover</h2>
+                
+                <!-- Orientation -->
+                <div class="option-group">
+                    <label>1. Select Orientation</label>
+                    <div class="option-buttons">
+                        <div class="option-btn" onclick="selectOption('orientation', 'left', this)">
+                            <div>Left Facing</div>
+                            <div style="font-size: 2rem;">⮜</div>
+                        </div>
+                        <div class="option-btn" onclick="selectOption('orientation', 'right', this)">
+                            <div>Right Facing</div>
+                            <div style="font-size: 2rem;">⮞</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Corner Style -->
+                <div class="option-group">
+                    <label>2. Corner Style</label>
+                    <div class="option-buttons">
+                        <div class="option-btn" onclick="selectOption('corner', 'square', this)">
+                            Square Corner<br>
+                            <small>(90° angle)</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption('corner', 'radius', this)">
+                            Radius Corner<br>
+                            <small>(Rounded)</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption('corner', 'angled', this)">
+                            Angled Corner<br>
+                            <small>(45° cut)</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step Location -->
+                <div class="option-group">
+                    <label>3. Step Location</label>
+                    <div class="option-buttons">
+                        <div class="option-btn" onclick="selectOption('steps', 'none', this)">No Steps</div>
+                        <div class="option-btn" onclick="selectOption('steps', 'long-left', this)">Long Side - Left</div>
+                        <div class="option-btn" onclick="selectOption('steps', 'long-right', this)">Long Side - Right</div>
+                        <div class="option-btn" onclick="selectOption('steps', 'short-left', this)">Short Side - Left</div>
+                        <div class="option-btn" onclick="selectOption('steps', 'short-right', this)">Short Side - Right</div>
+                        <div class="option-btn" onclick="selectOption('steps', 'corner', this)">Corner</div>
+                    </div>
+                </div>
+                
+                <!-- Dimensions -->
+                <div class="option-group">
+                    <label>4. Enter Dimensions (in feet)</label>
+                    <div class="dimension-inputs">
+                        <div class="input-group">
+                            <label>Length A (Long Section)</label>
+                            <input type="number" id="lengthA" placeholder="e.g., 40" min="10" max="50" onchange="updateSummary()">
+                        </div>
+                        <div class="input-group">
+                            <label>Width B (Top Width)</label>
+                            <input type="number" id="widthB" placeholder="e.g., 20" min="8" max="30" onchange="updateSummary()">
+                        </div>
+                        <div class="input-group">
+                            <label>Length C (Short Section)</label>
+                            <input type="number" id="lengthC" placeholder="e.g., 20" min="10" max="40" onchange="updateSummary()">
+                        </div>
+                        <div class="input-group">
+                            <label>Width D (Full Width)</label>
+                            <input type="number" id="widthD" placeholder="e.g., 30" min="12" max="40" onchange="updateSummary()">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cover Material -->
+                <div class="option-group">
+                    <label>5. Cover Material</label>
+                    <div class="option-buttons">
+                        <div class="option-btn" onclick="selectOption('material', '5000M', this)">
+                            5000M Mesh<br>
+                            <small>$899+</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption('material', '7000MS', this)">
+                            7000MS Premium<br>
+                            <small>$1199+</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption('material', '1000HS', this)">
+                            1000HS Solid<br>
+                            <small>$999+</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption('material', '9000MX', this)">
+                            9000MX Ultra<br>
+                            <small>$1599+</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Color Selection -->
+                <div class="option-group">
+                    <label>6. Cover Color</label>
+                    <div class="option-buttons">
+                        <div class="option-btn" onclick="selectOption('color', 'green', this)" style="background: #2d6a3e; color: white;">Green</div>
+                        <div class="option-btn" onclick="selectOption('color', 'blue', this)" style="background: #1e5a8e; color: white;">Blue</div>
+                        <div class="option-btn" onclick="selectOption('color', 'tan', this)" style="background: #c9a66b; color: white;">Tan</div>
+                        <div class="option-btn" onclick="selectOption('color', 'gray', this)" style="background: #6c757d; color: white;">Gray</div>
+                    </div>
+                </div>
+                
+                <!-- Configuration Summary -->
+                <div class="summary-section" id="summary">
+                    <h3>Configuration Summary</h3>
+                    <div class="summary-item">
+                        <span>Orientation:</span>
+                        <strong id="sum-orientation">Not selected</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Corner Style:</span>
+                        <strong id="sum-corner">Not selected</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Steps:</span>
+                        <strong id="sum-steps">Not selected</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Dimensions:</span>
+                        <strong id="sum-dimensions">Not entered</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Material:</span>
+                        <strong id="sum-material">Not selected</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Color:</span>
+                        <strong id="sum-color">Not selected</strong>
+                    </div>
+                    <div class="summary-item" style="border-top: 2px solid #0066cc; margin-top: 1rem; padding-top: 1rem;">
+                        <span style="font-size: 1.2rem;">Estimated Price:</span>
+                        <strong id="sum-price" style="font-size: 1.4rem; color: #28a745;">TBD</strong>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="resetConfiguration()">Reset</button>
+                    <button class="btn btn-primary" onclick="submitConfiguration()">Get Quote</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const config = {
+            orientation: null,
+            corner: null,
+            steps: null,
+            lengthA: null,
+            widthB: null,
+            lengthC: null,
+            widthD: null,
+            material: null,
+            color: null
+        };
+        
+        const materialPrices = {
+            '5000M': 899,
+            '7000MS': 1199,
+            '1000HS': 999,
+            '9000MX': 1599
+        };
+        
+        function selectOption(category, value, element) {
+            // Remove selection from siblings
+            const siblings = element.parentElement.querySelectorAll('.option-btn');
+            siblings.forEach(btn => btn.classList.remove('selected'));
+            
+            // Add selection to clicked element
+            element.classList.add('selected');
+            
+            // Update config
+            config[category] = value;
+            
+            // Update summary
+            updateSummary();
+        }
+        
+        function updateSummary() {
+            // Update orientation
+            document.getElementById('sum-orientation').textContent = 
+                config.orientation ? config.orientation.charAt(0).toUpperCase() + config.orientation.slice(1) : 'Not selected';
+            
+            // Update corner
+            document.getElementById('sum-corner').textContent = 
+                config.corner ? config.corner.charAt(0).toUpperCase() + config.corner.slice(1) : 'Not selected';
+            
+            // Update steps
+            document.getElementById('sum-steps').textContent = 
+                config.steps ? config.steps.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Not selected';
+            
+            // Update dimensions
+            const lengthA = document.getElementById('lengthA').value;
+            const widthB = document.getElementById('widthB').value;
+            const lengthC = document.getElementById('lengthC').value;
+            const widthD = document.getElementById('widthD').value;
+            
+            if (lengthA && widthB && lengthC && widthD) {
+                config.lengthA = lengthA;
+                config.widthB = widthB;
+                config.lengthC = lengthC;
+                config.widthD = widthD;
+                document.getElementById('sum-dimensions').textContent = 
+                    `A:${lengthA}' × B:${widthB}' × C:${lengthC}' × D:${widthD}'`;
+            } else {
+                document.getElementById('sum-dimensions').textContent = 'Not entered';
+            }
+            
+            // Update material
+            document.getElementById('sum-material').textContent = 
+                config.material || 'Not selected';
+            
+            // Update color
+            document.getElementById('sum-color').textContent = 
+                config.color ? config.color.charAt(0).toUpperCase() + config.color.slice(1) : 'Not selected';
+            
+            // Calculate price
+            if (config.material && lengthA && widthB && lengthC && widthD) {
+                const basePrice = materialPrices[config.material];
+                const totalArea = (parseFloat(lengthA) * parseFloat(widthB)) + 
+                                 (parseFloat(lengthC) * (parseFloat(widthD) - parseFloat(widthB)));
+                const pricePerSqFt = 2.5; // Approximate
+                const estimatedPrice = Math.round(basePrice + (totalArea * pricePerSqFt));
+                document.getElementById('sum-price').textContent = `$${estimatedPrice.toLocaleString()}`;
+            } else {
+                document.getElementById('sum-price').textContent = 'TBD';
+            }
+        }
+        
+        function resetConfiguration() {
+            // Reset config
+            Object.keys(config).forEach(key => config[key] = null);
+            
+            // Clear all selections
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+            
+            // Clear inputs
+            document.getElementById('lengthA').value = '';
+            document.getElementById('widthB').value = '';
+            document.getElementById('lengthC').value = '';
+            document.getElementById('widthD').value = '';
+            
+            // Update summary
+            updateSummary();
+        }
+        
+        function submitConfiguration() {
+            // Validate configuration
+            const required = ['orientation', 'corner', 'steps', 'lengthA', 'widthB', 'lengthC', 'widthD', 'material', 'color'];
+            const missing = required.filter(key => !config[key]);
+            
+            if (missing.length > 0) {
+                alert(`Please complete all required fields:\n${missing.map(k => k.charAt(0).toUpperCase() + k.slice(1)).join(', ')}`);
+                return;
+            }
+            
+            // Show summary
+            const summary = `
+Your Lazy-L Pool Cover Configuration:
+
+Orientation: ${config.orientation}
+Corner Style: ${config.corner}
+Steps: ${config.steps}
+Dimensions: 
+  - Length A: ${config.lengthA} ft
+  - Width B: ${config.widthB} ft
+  - Length C: ${config.lengthC} ft
+  - Width D: ${config.widthD} ft
+Material: ${config.material}
+Color: ${config.color}
+
+Estimated Price: ${document.getElementById('sum-price').textContent}
+
+A sales representative will contact you within 24 hours to finalize your quote!
+            `;
+            
+            alert(summary);
+            
+            // In production, this would submit to server
+            console.log('Configuration:', config);
+        }
+    </script>
+</body>
+</html>

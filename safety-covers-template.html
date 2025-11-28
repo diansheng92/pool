@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Covers - Five Star Pools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .header {
+            background: #fff;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .promo-banner {
+            background: #f8f8f8;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .breadcrumbs {
+            padding: 1rem 2rem;
+            background: #f5f5f5;
+        }
+        
+        .hero-section {
+            padding: 3rem 2rem;
+            background: #fff;
+            text-align: center;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .shape-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .shape-card {
+            text-align: center;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .shape-card:hover {
+            border-color: #0066cc;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .shape-card img {
+            width: 100%;
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .shape-card h4 {
+            font-size: 1.1rem;
+        }
+        
+        .content-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            text-align: center;
+        }
+        
+        .feature-card img {
+            width: 100%;
+            max-width: 200px;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #0066cc;
+        }
+        
+        .cover-type-section {
+            background: #f9f9f9;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+        }
+        
+        .cover-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .cover-type-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .cover-type-card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .cover-type-card h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .color-swatches {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            cursor: pointer;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .features-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .features-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0066cc;
+            font-weight: bold;
+        }
+        
+        .faq-section {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+        
+        .faq-item {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .faq-item h4 {
+            margin-bottom: 1rem;
+            color: #0066cc;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+        }
+        
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+        
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+        
+        .footer {
+            background: #333;
+            color: #fff;
+            padding: 3rem 2rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            color: #fff;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #0066cc;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+        
+        .cta-button:hover {
+            background: #0052a3;
+        }
+        
+        .highlight-box {
+            background: #e8f4ff;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .video-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .shape-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .feature-grid,
+            .cover-types {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 1rem;
+        }
+        
+        .step {
+            padding: 0.5rem 1rem;
+            background: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .step.active {
+            background: #0066cc;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .step.completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .shape-card.selected {
+            border-color: #0066cc;
+            background: #e8f4ff;
+            box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+        }
+        
+        .config-step {
+            display: none;
+        }
+        
+        .config-step.active {
+            display: block;
+        }
+        
+        .corner-options, .step-options, .size-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        
+        .option-card {
+            padding: 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-card:hover {
+            border-color: #0066cc;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-card.selected {
+            border-color: #0066cc;
+            background: #e8f4ff;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .nav-button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-button.prev {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .nav-button.next {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .nav-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .custom-cover-message {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 3rem;
+            background: #fff;
+            border: 2px solid #0066cc;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .custom-cover-message h3 {
+            color: #0066cc;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .custom-cover-message .step-display {
+            font-size: 1.1rem;
+            margin: 1.5rem 0;
+            color: #333;
+        }
+        
+        .custom-cover-message .step-display span {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .custom-cover-message p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+        
+        .custom-cover-message .cta-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1.2rem 3rem;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .custom-cover-message .cta-button:hover {
+            background: #0052a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="top-bar">
+            <div class="logo">
+                <strong>Five Star Pools</strong>
+            </div>
+            <div class="user-actions">
+                <span>Contact | Sign In/Up | Cart (0)</span>
+            </div>
+        </div>
+        <div class="promo-banner">
+            Free Shipping Over $149*
+        </div>
+        <nav>
+            <ul class="nav">
+                <li><a href="#winter">Winter</a></li>
+                <li><a href="#chemicals">Chemicals</a></li>
+                <li><a href="#equipment">Equipment</a></li>
+                <li><a href="#liners">Liners</a></li>
+                <li><a href="#covers">Covers</a></li>
+                <li><a href="#accessories">Accessories</a></li>
+                <li><a href="#clearance">Clearance</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <a href="#">Home</a> &gt; <a href="#">Covers</a> &gt; <strong>Safety Covers</strong>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1>Safety Covers</h1>
+        <p>Finding the best protection for your inground pool this Winter has never been easier - it takes less than 60 seconds to see if your pool qualifies for use with a stock safety cover!</p>
+        
+        <div class="highlight-box">
+            <strong>NO MORE WAITING FOR LONG LEAD TIMES</strong> - ORDER AND RECEIVE YOUR REPLACEMENT SAFETY COVER WITHIN JUST 15 - 20 BUSINESS DAYS!*
+        </div>
+    </section>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+        <div class="step active" data-step="1">Step 1: Choose Shape</div>
+        <div class="step" data-step="2">Step 2: Choose Corner</div>
+        <div class="step" data-step="3">Step 3: Choose Step</div>
+        <div class="step" data-step="4">Step 4: Choose Size</div>
+    </div>
+
+    <!-- Configuration Container -->
+    <div id="cover-configurator">
+        <!-- Step 1: Shape Selector -->
+        <section class="config-step active" id="step-1">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Choose Pool Shape:</h2>
+            <div class="shape-selector">
+                <div class="shape-card" data-shape="rectangle">
+                    <img src="images/rectangle.png" alt="Rectangle Shape">
+                    <h4>Rectangle</h4>
+                </div>
+                <div class="shape-card" data-shape="grecian">
+                    <img src="images/grecian.png" alt="Grecian Shape">
+                    <h4>Grecian</h4>
+                </div>
+                <div class="shape-card" data-shape="oval">
+                    <img src="images/oval.png" alt="Oval Shape">
+                    <h4>Oval</h4>
+                </div>
+                <div class="shape-card" data-shape="lazy-l">
+                    <img src="images/lazy-l.png" alt="Lazy-L Shape">
+                    <h4>Lazy-L</h4>
+                </div>
+                <div class="shape-card" data-shape="square-l">
+                    <img src="images/square-l.png" alt="Square-L Shape">
+                    <h4>Square-L</h4>
+                </div>
+                <div class="shape-card" data-shape="round">
+                    <img src="images/round.png" alt="Round Shape">
+                    <h4>Round</h4>
+                </div>
+                <div class="shape-card" data-shape="roman">
+                    <img src="images/roman.png" alt="Roman Shape">
+                    <h4>Roman</h4>
+                </div>
+                <div class="shape-card" data-shape="custom">
+                    <img src="images/custom.png" alt="Custom Shape">
+                    <h4>Custom</h4>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: Corner Selection -->
+        <section class="config-step" id="step-2">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Choose Corner Type:</h2>
+            <div class="corner-options">
+                <div class="option-card" data-corner="square">
+                    <h3>Square Corners</h3>
+                    <p>Standard 90° corners</p>
+                </div>
+                <div class="option-card" data-corner="radius">
+                    <h3>Radius Corners</h3>
+                    <p>Rounded corners</p>
+                </div>
+                <div class="option-card" data-corner="true-l">
+                    <h3>True L</h3>
+                    <p>90° L-shape</p>
+                </div>
+            </div>
+            <div class="navigation-buttons">
+                <button class="nav-button prev" onclick="previousStep()">Previous</button>
+                <button class="nav-button next" onclick="nextStep()" disabled>Next</button>
+            </div>
+        </section>
+
+        <!-- Step 3: Step Selection -->
+        <section class="config-step" id="step-3">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Choose Step Location:</h2>
+            <div class="step-options">
+                <div class="option-card" data-step-location="none">
+                    <h3>No Steps</h3>
+                </div>
+                <div class="option-card" data-step-location="left">
+                    <h3>Left Side</h3>
+                </div>
+                <div class="option-card" data-step-location="right">
+                    <h3>Right Side</h3>
+                </div>
+                <div class="option-card" data-step-location="center">
+                    <h3>Center</h3>
+                </div>
+                <div class="option-card" data-step-location="corner">
+                    <h3>Corner</h3>
+                </div>
+            </div>
+            <div class="navigation-buttons">
+                <button class="nav-button prev" onclick="previousStep()">Previous</button>
+                <button class="nav-button next" onclick="nextStep()" disabled>Next</button>
+            </div>
+        </section>
+
+        <!-- Step 4: Size Selection -->
+        <section class="config-step" id="step-4">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Choose Pool Size:</h2>
+            <div class="size-options" id="size-options">
+                <!-- Sizes will be populated dynamically based on shape -->
+            </div>
+            <div class="navigation-buttons">
+                <button class="nav-button prev" onclick="previousStep()">Previous</button>
+                <button class="nav-button next" onclick="completeConfiguration()">View Available Covers</button>
+            </div>
+        </section>
+        
+        <!-- Custom Cover Message (for Lazy-L and other custom shapes) -->
+        <section class="config-step" id="step-custom">
+            <div class="custom-cover-message">
+                <div class="step-display">
+                    <strong>Step 1: Shape:</strong> <span id="custom-shape-name">Lazy-L</span> ✓<br>
+                    <strong>Step 2: Send Measurements</strong>
+                </div>
+                <h3>Looks like your pool requires a custom safety cover</h3>
+                <p>Click below to get a FREE quote!</p>
+                <a href="#" class="cta-button" id="custom-quote-button">Click here for custom <span id="custom-shape-link">Lazy-L</span> options</a>
+                <p style="margin-top: 2rem; font-size: 0.95rem; color: #666;">
+                    * Turnaround times listed online begin after payment has been made, and the order is submitted for manufacturing
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Stock Safety Covers Section -->
+    <section class="content-section">
+        <h2>Stock Safety Covers</h2>
+        <p>For customer convenience, Five Star Pools offers 14 shapes and over 100 sizes of in stock safety covers. Most of our stock covers are ready to ship out to you within 24 - 48 hours and are delivered in as little as 2 - 5 business days!</p>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <img src="images/lowest-price.png" alt="Lowest Prices">
+                <h3>Lowest Prices & Largest Selection</h3>
+                <p>Five Star Pools is proud to offer 14 shapes and over 100 sizes of stock safety covers that are in stock and ready to ship! We have the lowest stock cover pricing online in Canada - starting at only $599!</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/installation.png" alt="DIY Installation">
+                <h3>Quick & Easy DIY Installation</h3>
+                <p>With all the hardware required for a standard concrete deck installation included, installing a Five Star Pools stock safety cover is quick and simple - you CAN do it yourself!</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/tools.png" alt="Tools Included">
+                <h3>Includes Everything You Need</h3>
+                <p>Stock safety covers offer affordable protection for standard pool shapes and sizes, and include all of the instructions and hardware to get the job done.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Safety Covers Section -->
+    <section class="content-section" style="background: #f9f9f9;">
+        <h2>Custom Safety Covers</h2>
+        <p>If you have an irregular or freeform shaped pool that isn't compatible with a stock safety cover, we've got you covered with a custom made-to-fit cover!</p>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <img src="images/custom-price.png" alt="Custom Pricing">
+                <h3>The Best Prices & A Perfect Fit</h3>
+                <p>We offer the lowest custom safety cover pricing online in Canada - starting at $1209! Our custom covers are available in 4 great colours and in 3 industry-leading grades of material.</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/hardware.png" alt="Custom Hardware">
+                <h3>Everything You Need For a Seamless Replacement</h3>
+                <p>All of the hardware included with your safety cover is tailored to suit your unique installation requirements. Plus, all custom covers receive FREE Heavy Duty Anchor Springs!</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/perfect-fit.png" alt="Perfect Fit">
+                <h3>Quick & Easy DIY Installation</h3>
+                <p>Custom made to perfectly fit your unique pool shape and size, installing a Five Star Pools custom safety cover is quick and simple - you CAN do it yourself!</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="#" class="cta-button">Get a Custom Cover Quote</a>
+        </div>
+    </section>
+
+    <!-- Cover Types -->
+    <section class="cover-type-section">
+        <h2 style="text-align: center; margin-bottom: 3rem;">Choose The Right Safety Cover For You</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Click on a swatch to see our available colours - cover material/colour options shown are available on custom safety cover orders only.</p>
+        
+        <div class="cover-types">
+            <div class="cover-type-card">
+                <h3>5000M Covers</h3>
+                <img src="images/5000m-cover.jpg" alt="5000M Mesh Cover">
+                <div class="color-swatches">
+                    <div class="color-swatch" style="background: green;" title="Green"></div>
+                    <div class="color-swatch" style="background: blue;" title="Blue"></div>
+                    <div class="color-swatch" style="background: tan;" title="Tan"></div>
+                    <div class="color-swatch" style="background: gray;" title="Gray"></div>
+                </div>
+                <strong>Key Features:</strong>
+                <ul class="features-list">
+                    <li>Durable micro-weave material combines 91% sun block and high-level protection with value</li>
+                    <li>This mesh has the highest abrasion resistance and tear strength in its class</li>
+                    <li>15 Year Limited, 3 Year Full Warranty</li>
+                </ul>
+            </div>
+            
+            <div class="cover-type-card">
+                <h3>7000MS Covers</h3>
+                <img src="images/7000ms-cover.jpg" alt="7000MS Premium Cover">
+                <div class="color-swatches">
+                    <div class="color-swatch" style="background: green;" title="Green"></div>
+                    <div class="color-swatch" style="background: blue;" title="Blue"></div>
+                    <div class="color-swatch" style="background: tan;" title="Tan"></div>
+                    <div class="color-swatch" style="background: grey;" title="Grey"></div>
+                </div>
+                <strong>Key Features:</strong>
+                <ul class="features-list">
+                    <li>Lightweight, ultra-fine weave mesh material blocks 99% of sunlight</li>
+                    <li>Filters fine dirt particles down to 40 microns</li>
+                    <li>Provides excellent all-climate performance</li>
+                    <li>20 Year Limited, 5 Year Full Warranty</li>
+                </ul>
+            </div>
+            
+            <div class="cover-type-card">
+                <h3>1000HS Covers</h3>
+                <img src="images/1000hs-cover.jpg" alt="1000HS Light Solid Cover">
+                <div class="color-swatches">
+                    <div class="color-swatch" style="background: green;" title="Green"></div>
+                    <div class="color-swatch" style="background: blue;" title="Blue"></div>
+                    <div class="color-swatch" style="background: tan;" title="Tan"></div>
+                    <div class="color-swatch" style="background: tan;" title="Tan"></div>
+                </div>
+                <strong>Key Features:</strong>
+                <ul class="features-list">
+                    <li>This solid cover acts as a complete barrier to sunlight, dirt, debris and water</li>
+                    <li>Heavy-duty fabric construction provides protection from the elements</li>
+                    <li>Invis-A-Drain system handles rain and melting snow</li>
+                    <li>15 Year Limited, 3 Year Full Warranty</li>
+                </ul>
+            </div>
+            
+            <div class="cover-type-card">
+                <h3>9000MX Covers</h3>
+                <img src="images/9000mx-cover.jpg" alt="9000MX Premium Cover">
+                <div class="color-swatches">
+                    <div class="color-swatch" style="background: linear-gradient(45deg, black 50%, gray 50%);" title="Black/Gray"></div>
+                </div>
+                <strong>Key Features:</strong>
+                <ul class="features-list">
+                    <li>Engineered with the highest level of protection and sunlight blockage</li>
+                    <li>Built with reinforced mesh, box-stitched thread, and heavy-duty suspension</li>
+                    <li>Designed to be stronger and more reliable than other covers</li>
+                    <li>25 Year Limited, 5 Year Full Warranty</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="content-section">
+        <h2>Why Choose a Five Star Pools Safety Cover?</h2>
+        <p>All of our safety covers are built by an industry leader, and offer only the highest quality, reliability and durability.</p>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <img src="images/latham-logo.png" alt="Made by Latham">
+                <h3>Made by an Industry Leader</h3>
+                <p>Our safety covers are manufactured by Latham, one of North America's leading cover manufacturers.</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/canada-weather.png" alt="Built for Canada">
+                <h3>Built for Canada's Harshest Winters</h3>
+                <p>Our safety covers are made in North America, and designed to withstand the harshest, coldest Winter climate conditions.</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/best-price.png" alt="Best Price">
+                <h3>Lowest Canadian Prices, Guaranteed</h3>
+                <p>Our stock safety covers are available from as low as $599. If you find a lower price online in Canada, we will beat it!</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/astm-certified.png" alt="ASTM Certified">
+                <h3>Stronger Than The Competition</h3>
+                <p>Our safety covers are made with 3-ply, 4,000 lb burst strength polypropylene webbing, and meet or exceed ASTM Safety Standards.</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/high-weave.png" alt="High Weave Count">
+                <h3>Higher Weave Count for Superior Shading</h3>
+                <p>Our covers start at 95% shading and go up from there. A higher weave count means less algae growth in your pool.</p>
+            </div>
+            <div class="feature-card">
+                <img src="images/uv-protection.png" alt="UV Protection">
+                <h3>Long Lasting UV Protection</h3>
+                <p>All of our safety covers are manufactured from durable, long lasting UV resistant material.</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="#" class="cta-button">Download The Installation Guide</a>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <h2>Safety Cover FAQs</h2>
+        <p>Have questions regarding safety covers? We have the answers! Here are answers to some of the most common questions we receive regarding inground pool safety covers.</p>
+        
+        <div class="faq-item">
+            <h4>What is a Safety Cover?</h4>
+            <p>Safety covers are light weight yet extremely strong inground swimming pool covers that prevent your pets and children from falling in to your pool during the Winter, while also keeping dirt, leaves and stagnant water out.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4>What are the Benefits of a Safety Cover?</h4>
+            <p>A pool safety cover is a solid vinyl or mesh cover that is pulled tightly across your inground pool. Secured using anchors which are installed around the perimeter of your pool, a safety cover provides a custom fit that is simply not possible with a regular winter cover.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4>Can I order a Stock Safety Cover?</h4>
+            <p>Five Star Pools offers 14 shapes and over 100 sizes of in stock, pre-made safety covers that are ready to ship! Use the online cover finder at the top of this page to see if your pool qualifies for use with a stock safety cover.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4>What is Cover Replacement? Will It Work For Me?</h4>
+            <p>Do you have an old safety cover you can't use any more? Take advantage of Five Star Pools's exclusive cover replacement program and get your cover remade quickly so you don't have to drill new anchors in your concrete or wooden deck!</p>
+        </div>
+        
+        <div class="faq-item">
+            <h4>What is the warranty on custom safety covers?</h4>
+            <p>For more information or to view our custom safety cover warranty coverage, please click here.</p>
+        </div>
+    </section>
+
+    <!-- Customer Gallery -->
+    <section class="content-section">
+        <h2>Customer Installations</h2>
+        <p>Here are just some of the many photos we've received over the years of our customers' finished cover installations. You CAN do it yourself!</p>
+        
+        <div class="gallery">
+            <img src="images/install-1.jpg" alt="Installation Step 1">
+            <img src="images/install-2.jpg" alt="Installation Step 2">
+            <img src="images/install-3.jpg" alt="Installation Step 3">
+            <img src="images/install-4.jpg" alt="Installation Step 4">
+            <img src="images/install-5.jpg" alt="Completed Installation">
+            <img src="images/install-6.jpg" alt="Rectangle Pool Cover">
+        </div>
+    </section>
+
+    <!-- Installation Video -->
+    <section class="video-container">
+        <h2>Installation Video</h2>
+        <p>Watch and see just how easy it actually is to install your very own safety cover!</p>
+        <div style="background: #000; height: 400px; display: flex; align-items: center; justify-content: center; color: #fff; margin-top: 2rem;">
+            [Video Player Placeholder]
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3>Orders</h3>
+                <ul>
+                    <li><a href="#">Your Account</a></li>
+                    <li><a href="#">View or Cancel an Order</a></li>
+                    <li><a href="#">Return a Product</a></li>
+                    <li><a href="#">Report Lost or Damaged Products</a></li>
+                    <li><a href="#">Start a Product Warranty Claim</a></li>
+                    <li><a href="#">Order Processing & Shipping Times</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Contact Us & Hours of Operation</a></li>
+                    <li><a href="#">Frequently Asked Questions</a></li>
+                    <li><a href="#">Rebate Center</a></li>
+                    <li><a href="#">Terms of Sale</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">US Customer? Click Here to Shop</a></li>
+                    <li><a href="#">How To Guides</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Information</h3>
+                <ul>
+                    <li><a href="#">About Five Star Pools</a></li>
+                    <li><a href="#">See Our Customer Reviews</a></li>
+                    <li><a href="#">Five Star Pools Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                    <li><a href="#">Find Local Pool Service Providers</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Subscribe for our Promotions</h3>
+                <p>Receive a $10 off coupon for use towards your first order of $149+ when you sign up.</p>
+                <form>
+                    <input type="email" placeholder="Email" style="padding: 0.5rem; width: 100%; margin-bottom: 0.5rem;">
+                    <button type="submit" style="padding: 0.5rem 1rem; background: #0066cc; color: #fff; border: none; cursor: pointer;">Sign Up</button>
+                </form>
+                <div style="margin-top: 1rem;">
+                    <p>Payment Methods: VISA, MasterCard, PayPal, American Express, Apple Pay, INTERAC, Afterpay, Sezzle</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #555;">
+            <p>© 2009 - 2025 Five Star Pools™, 100% Canadian Owned and Operated. All Prices in Canadian Dollars.</p>
+            <p style="margin-top: 0.5rem;">*Free shipping valid in Canada Only; Remote areas do not qualify for free shipping.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Configuration state
+        const config = {
+            shape: null,
+            corner: null,
+            stepLocation: null,
+            size: null,
+            workflow: null  // Shape-specific workflow
+        };
+        
+        let currentStep = 1;
+        
+        // Sample size data based on shape
+        const sizeData = {
+            rectangle: [
+                "12' x 24'", "14' x 28'", "16' x 32'", "18' x 36'", "20' x 40'",
+                "16' x 36'", "18' x 40'", "20' x 44'"
+            ],
+            grecian: [
+                "14' x 28'", "16' x 32'", "18' x 36'", "20' x 40'"
+            ],
+            oval: [
+                "12' x 24'", "15' x 30'", "18' x 36'", "20' x 40'"
+            ],
+            'lazy-l': [
+                "16' x 32'", "18' x 36'", "20' x 40'"
+            ],
+            'square-l': [
+                "16' x 32'", "18' x 36'", "20' x 40'"
+            ],
+            round: [
+                "18'", "21'", "24'", "27'", "30'"
+            ],
+            roman: [
+                "14' x 28'", "16' x 32'", "18' x 36'", "20' x 40'"
+            ],
+            custom: []
+        };
+        
+        // Define shape-specific workflows
+        const shapeWorkflows = {
+            rectangle: { hasCorner: true, hasStep: true, hasSize: true },
+            grecian: { hasCorner: true, hasStep: true, hasSize: true },
+            oval: { hasCorner: false, hasStep: false, hasSize: true },
+            'lazy-l': { hasCorner: false, hasStep: false, hasSize: false, requiresCustom: true },  // Lazy-L requires custom cover
+            'square-l': { hasCorner: false, hasStep: true, hasSize: true },
+            round: { hasCorner: false, hasStep: false, hasSize: true },
+            roman: { hasCorner: true, hasStep: true, hasSize: true }
+        };
+        
+        // Shape selection
+        document.querySelectorAll('.shape-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const shape = this.dataset.shape;
+                const workflow = shapeWorkflows[shape];
+                
+                // Handle custom shape differently
+                if (shape === 'custom') {
+                    alert('For custom shapes, please contact us for a quote. Our team will work with you to create the perfect fit for your unique pool.');
+                    return;
+                }
+                
+                // Handle shapes that require custom covers
+                if (workflow && workflow.requiresCustom) {
+                    showCustomCoverUI(shape);
+                    return;
+                }
+                
+                // Remove selection from all cards
+                document.querySelectorAll('.shape-card').forEach(c => c.classList.remove('selected'));
+                
+                // Add selection to clicked card
+                this.classList.add('selected');
+                
+                // Update config
+                config.shape = shape;
+                config.workflow = workflow;
+                
+                // Auto-advance to next step after a brief delay
+                setTimeout(() => {
+                    nextStepForShape();
+                }, 300);
+            });
+        });
+        
+        // Show custom cover UI for shapes that need custom measurements
+        function showCustomCoverUI(shape) {
+            // Hide all steps
+            document.querySelectorAll('.config-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // Update step indicator to show only steps 1 and 2
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index === 0) {
+                    step.classList.add('completed');
+                } else if (index > 1) {
+                    step.style.opacity = '0.3';
+                    step.style.textDecoration = 'line-through';
+                }
+            });
+            
+            // Update custom message with shape name
+            const shapeName = shape.charAt(0).toUpperCase() + shape.slice(1);
+            document.getElementById('custom-shape-name').textContent = shapeName;
+            document.getElementById('custom-shape-link').textContent = shapeName;
+            
+            // Update button link
+            const customButton = document.getElementById('custom-quote-button');
+            customButton.href = `/covers/safety-covers/${shape}-safety-covers/`;
+            
+            // Show custom message
+            document.getElementById('step-custom').classList.add('active');
+            
+            // Scroll to configurator
+            document.getElementById('cover-configurator').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Corner selection
+        document.querySelectorAll('.option-card[data-corner]').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.option-card[data-corner]').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                config.corner = this.dataset.corner;
+                document.querySelector('#step-2 .nav-button.next').disabled = false;
+            });
+        });
+        
+        // Step location selection
+        document.querySelectorAll('.option-card[data-step-location]').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.option-card[data-step-location]').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                config.stepLocation = this.dataset.stepLocation;
+                document.querySelector('#step-3 .nav-button.next').disabled = false;
+            });
+        });
+        
+        // Update step indicator with workflow-specific visibility
+        function updateStepIndicator() {
+            document.querySelectorAll('.step').forEach((step, index) => {
+                const stepNum = index + 1;
+                step.classList.remove('active', 'completed');
+                step.style.opacity = '1';
+                
+                // Dim steps that are skipped for this shape
+                if (config.workflow) {
+                    if (stepNum === 2 && !config.workflow.hasCorner) {
+                        step.style.opacity = '0.3';
+                        step.style.textDecoration = 'line-through';
+                    }
+                    if (stepNum === 3 && !config.workflow.hasStep) {
+                        step.style.opacity = '0.3';
+                        step.style.textDecoration = 'line-through';
+                    }
+                }
+                
+                if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                } else if (stepNum === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+        
+        // Next step function with shape-specific logic
+        function nextStepForShape() {
+            if (!config.workflow) return;
+            
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            // Determine next step based on workflow
+            currentStep++;
+            
+            // Skip corner step if shape doesn't need it
+            if (currentStep === 2 && !config.workflow.hasCorner) {
+                config.corner = 'n/a';  // Auto-set
+                currentStep = 3;  // Skip to step 3
+            }
+            
+            // Skip step location if shape doesn't need it
+            if (currentStep === 3 && !config.workflow.hasStep) {
+                config.stepLocation = 'n/a';  // Auto-set
+                currentStep = 4;  // Skip to size
+            }
+            
+            // Show next step
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Update step indicator
+            updateStepIndicator();
+            
+            // If moving to step 4, populate sizes
+            if (currentStep === 4) {
+                populateSizes();
+            }
+            
+            // Scroll to top of configurator
+            document.getElementById('cover-configurator').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Next step function (for manual navigation)
+        function nextStep() {
+            if (currentStep === 1 && !config.shape) {
+                alert('Please select a pool shape first');
+                return;
+            }
+            
+            if (currentStep === 2 && !config.corner && config.workflow.hasCorner) {
+                alert('Please select a corner type first');
+                return;
+            }
+            
+            if (currentStep === 3 && !config.stepLocation && config.workflow.hasStep) {
+                alert('Please select a step location first');
+                return;
+            }
+            
+            // Use shape-specific navigation if workflow exists
+            if (config.workflow) {
+                nextStepForShape();
+            } else {
+                // Default navigation
+                document.getElementById(`step-${currentStep}`).classList.remove('active');
+                currentStep++;
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                updateStepIndicator();
+                
+                if (currentStep === 4) {
+                    populateSizes();
+                }
+                
+                document.getElementById('cover-configurator').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Previous step function
+        function previousStep() {
+            if (currentStep === 1) return;
+            
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            // Move to previous step
+            currentStep--;
+            
+            // Show previous step
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Update step indicator
+            updateStepIndicator();
+            
+            // Scroll to top of configurator
+            document.getElementById('cover-configurator').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Populate sizes based on selected shape
+        function populateSizes() {
+            const sizeContainer = document.getElementById('size-options');
+            sizeContainer.innerHTML = '';
+            
+            const sizes = sizeData[config.shape] || [];
+            
+            if (sizes.length === 0) {
+                sizeContainer.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No standard sizes available. Please contact us for a custom quote.</p>';
+                return;
+            }
+            
+            sizes.forEach(size => {
+                const sizeCard = document.createElement('div');
+                sizeCard.className = 'option-card';
+                sizeCard.dataset.size = size;
+                sizeCard.innerHTML = `<h3>${size}</h3>`;
+                
+                sizeCard.addEventListener('click', function() {
+                    document.querySelectorAll('.option-card[data-size]').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    config.size = size;
+                    document.querySelector('#step-4 .nav-button.next').disabled = false;
+                });
+                
+                sizeContainer.appendChild(sizeCard);
+            });
+        }
+        
+        // Complete configuration
+        function completeConfiguration() {
+            if (!config.size) {
+                alert('Please select a size first');
+                return;
+            }
+            
+            // Show configuration summary
+            const summary = `
+                Configuration Summary:
+                
+                Shape: ${config.shape}
+                Corner Type: ${config.corner}
+                Step Location: ${config.stepLocation}
+                Size: ${config.size}
+                
+                Great choice! We'll now show you available covers matching your specifications.
+            `;
+            
+            alert(summary);
+            
+            // In a real implementation, this would redirect to product listings or add to cart
+            console.log('Configuration:', config);
+        }
+        
+        // Make step indicator clickable for completed steps
+        document.querySelectorAll('.step').forEach(step => {
+            step.addEventListener('click', function() {
+                const stepNum = parseInt(this.dataset.step);
+                if (stepNum < currentStep) {
+                    // Hide current step
+                    document.getElementById(`step-${currentStep}`).classList.remove('active');
+                    
+                    // Move to clicked step
+                    currentStep = stepNum;
+                    
+                    // Show clicked step
+                    document.getElementById(`step-${currentStep}`).classList.add('active');
+                    
+                    // Update step indicator
+                    updateStepIndicator();
+                    
+                    // Scroll to configurator
+                    document.getElementById('cover-configurator').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Shape Selector - Five Star Pools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .selector-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 900px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .shapes-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .shape-button {
+            background: #f8f9fa;
+            border: 3px solid transparent;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .shape-button:hover {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+        
+        .shape-button.selected {
+            border-color: #667eea;
+            background: #f0f3ff;
+        }
+        
+        .shape-button img {
+            width: 100%;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+        }
+        
+        .shape-button label {
+            display: block;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .result-section {
+            display: none;
+            background: #f0f3ff;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+        
+        .result-section.show {
+            display: block;
+        }
+        
+        .result-section h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .size-tag {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 2px solid #667eea;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .action-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .action-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .shapes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="selector-container">
+        <h1>🏊 Quick Shape Selector</h1>
+        <p class="description">Select your pool shape to see available cover sizes</p>
+        
+        <div class="shapes-grid">
+            <div class="shape-button" onclick="selectShape('rectangle', this)">
+                <img src="images/rectangle.png" alt="Rectangle">
+                <label>Rectangle</label>
+            </div>
+            
+            <div class="shape-button" onclick="selectShape('grecian', this)">
+                <img src="images/grecian.png" alt="Grecian">
+                <label>Grecian</label>
+            </div>
+            
+            <div class="shape-button" onclick="selectShape('oval', this)">
+                <img src="images/oval.png" alt="Oval">
+                <label>Oval</label>
+            </div>
+            
+            <div class="shape-button" onclick="selectShape('lazy-l', this)">
+                <img src="images/lazy-l.png" alt="Lazy-L">
+                <label>Lazy-L</label>
+            </div>
+            
+            <div class="shape-button" onclick="selectShape('square-l', this)">
+                <img src="images/square-l.png" alt="Square-L">
+                <label>Square-L</label>
+            </div>
+            
+            <div class="shape-button" onclick="selectShape('round', this)">
+                <img src="images/round.png" alt="Round">
+                <label>Round</label>
+            </div>
+            
+            <div class="shape-button" onclick="selectShape('roman', this)">
+                <img src="images/roman.png" alt="Roman">
+                <label>Roman</label>
+            </div>
+            
+            <div class="shape-button" onclick="selectShape('custom', this)">
+                <img src="images/custom.png" alt="Custom">
+                <label>Custom</label>
+            </div>
+        </div>
+        
+        <div id="result" class="result-section">
+            <h2 id="result-title">Available Sizes</h2>
+            <div id="sizes" class="size-options"></div>
+            <button class="action-button" onclick="viewProducts()">View Products</button>
+        </div>
+        
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+    
+    <script>
+        const sizesData = {
+            rectangle: ["12' x 24'", "14' x 28'", "16' x 32'", "18' x 36'", "20' x 40'", "16' x 36'", "18' x 40'", "20' x 44'"],
+            grecian: ["14' x 28'", "16' x 32'", "18' x 36'", "20' x 40'"],
+            oval: ["12' x 24'", "15' x 30'", "18' x 36'", "20' x 40'"],
+            'lazy-l': ["16' x 32'", "18' x 36'", "20' x 40'"],
+            'square-l': ["16' x 32'", "18' x 36'", "20' x 40'"],
+            round: ["18'", "21'", "24'", "27'", "30'"],
+            roman: ["14' x 28'", "16' x 32'", "18' x 36'", "20' x 40'"]
+        };
+        
+        let selectedShape = null;
+        
+        function selectShape(shape, element) {
+            // Remove previous selection
+            document.querySelectorAll('.shape-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Add selection to clicked button
+            element.classList.add('selected');
+            
+            selectedShape = shape;
+            
+            // Handle custom shape
+            if (shape === 'custom') {
+                document.getElementById('result-title').textContent = 'Custom Shape Selected';
+                document.getElementById('sizes').innerHTML = '<p>Custom shapes require a personalized quote. Please contact our team for assistance.</p>';
+                document.getElementById('result').classList.add('show');
+                return;
+            }
+            
+            // Show available sizes
+            const sizes = sizesData[shape];
+            const shapeName = shape.charAt(0).toUpperCase() + shape.slice(1).replace('-', '-');
+            
+            document.getElementById('result-title').textContent = `${shapeName} Pool Cover Sizes`;
+            
+            const sizesHTML = sizes.map(size => `<div class="size-tag">${size}</div>`).join('');
+            document.getElementById('sizes').innerHTML = sizesHTML;
+            
+            document.getElementById('result').classList.add('show');
+        }
+        
+        function viewProducts() {
+            if (selectedShape) {
+                alert(`Viewing products for ${selectedShape} pools...\n\nIn production, this would navigate to the product catalog.`);
+            }
+        }
+    </script>
+</body>
+</html>
