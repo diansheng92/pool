@@ -733,6 +733,18 @@
         .user-dropdown a:hover {
             background: #f5f5f5;
         }
+        /* Bulk Form (60 lines x 3 columns) */
+        .bulk-form-section {background:#fff;border:1px solid #ddd;border-radius:10px;padding:2rem;margin:2rem auto;max-width:1100px;display:none;}
+        .bulk-form-section h2 {text-align:center;margin-bottom:1.25rem;font-size:1.55rem;}
+        .bulk-form-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+        .bulk-form-grid .field-group {display:flex;flex-direction:column;}
+        .bulk-form-grid .field-group label {font-size:0.7rem;font-weight:600;margin-bottom:0.25rem;color:#333;letter-spacing:0.5px;}
+        .bulk-form-grid .field-group input {width:100%;padding:0.45rem 0.55rem;border:1px solid #ccc;border-radius:4px;font-size:0.8rem;}
+        .bulk-form-grid .field-group input:focus {outline:none;border-color:#0066cc;}
+        .bulk-form-section button[type="submit"] {background:#0066cc;color:#fff;border:none;border-radius:6px;padding:0.85rem 2rem;font-size:1rem;font-weight:600;cursor:pointer;}
+        .bulk-form-section button[type="submit"]:hover {background:#0052a3;}
+        @media (max-width: 1000px){.bulk-form-grid{grid-template-columns:repeat(2,1fr);} }
+        @media (max-width: 640px){.bulk-form-grid{grid-template-columns:1fr;} }
     </style>
 </head>
 <body>
@@ -797,6 +809,17 @@
                     <h4>Customized</h4>
                 </div>
             </div>
+        </section>
+
+        <!-- 60 x 3 Detailed Measurements Form (shown for Customized) -->
+        <section id="bulk-form-section" class="bulk-form-section">
+            <h2>Detailed Custom Measurements</h2>
+            <form id="bulk-measurements-form">
+                <div id="bulk-form-grid" class="bulk-form-grid"></div>
+                <div style="text-align:center;margin-top:1.75rem;">
+                    <button type="submit">Submit Measurements</button>
+                </div>
+            </form>
         </section>
 
         <!-- Step 2: Corner Selection -->
@@ -1327,9 +1350,16 @@
             
             // Show custom message
             document.getElementById('step-custom').classList.add('active');
-            
-            // Scroll to configurator
-            document.getElementById('cover-configurator').scrollIntoView({ behavior: 'smooth' });
+
+            // Reveal bulk measurement form and scroll directly to it
+            const bulkSection = document.getElementById('bulk-form-section');
+            if (bulkSection) {
+                bulkSection.style.display = 'block';
+                bulkSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Fallback scroll
+                document.getElementById('cover-configurator').scrollIntoView({ behavior: 'smooth' });
+            }
         }
         
         // Corner selection
@@ -1706,6 +1736,37 @@
                     // Token invalid, clear it
                     localStorage.removeItem('authToken');
                 }
+            }
+
+            // Generate 180 inputs (60 lines * 3 columns)
+            const grid = document.getElementById('bulk-form-grid');
+            if (grid && grid.children.length === 0) {
+                for (let i = 1; i <= 180; i++) {
+                    const group = document.createElement('div');
+                    group.className = 'field-group';
+                    const label = document.createElement('label');
+                    label.textContent = 'Field ' + i;
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = 'field_' + i;
+                    group.appendChild(label);
+                    group.appendChild(input);
+                    grid.appendChild(group);
+                }
+            }
+
+            // Submission handler for bulk measurements form
+            const bulkForm = document.getElementById('bulk-measurements-form');
+            if (bulkForm) {
+                bulkForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const data = new FormData(bulkForm);
+                    let filled = 0;
+                    for (const [k, v] of data.entries()) {
+                        if (v.trim() !== '') filled++;
+                    }
+                    alert('Submitted ' + filled + ' filled fields out of 180 (Demo).');
+                });
             }
         });
         
