@@ -164,7 +164,6 @@
         .form-group input[type="text"],
         .form-group input[type="email"],
         .form-group input[type="tel"],
-        .form-group input[type="file"],
         .form-group textarea,
         .form-group select {
             width: 100%;
@@ -235,6 +234,19 @@
             background: #0052a3;
         }
 
+        /* Bulk measurement grid (60 lines x 3 columns = 180 fields) */
+        .bulk-measurements-wrapper {margin-top:3rem;background:#fff;border:1px solid #ddd;border-radius:10px;padding:2rem;}
+        .bulk-measurements-wrapper h2 {text-align:center;font-size:1.8rem;margin-bottom:1.25rem;color:#0066cc;}
+        .bulk-measurements-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;}
+        .bulk-measurements-grid .field-group {display:flex;flex-direction:column;}
+        .bulk-measurements-grid .field-group label {font-size:0.65rem;font-weight:600;margin-bottom:0.25rem;color:#333;letter-spacing:0.5px;}
+        .bulk-measurements-grid .field-group input {padding:0.5rem 0.55rem;border:1px solid #ccc;border-radius:4px;font-size:0.75rem;}
+        .bulk-measurements-grid .field-group input:focus {outline:none;border-color:#0066cc;}
+        .bulk-submit {display:block;margin:2rem auto 0 auto;background:#0066cc;color:#fff;border:none;border-radius:6px;padding:0.9rem 2rem;font-size:1rem;font-weight:600;cursor:pointer;}
+        .bulk-submit:hover {background:#0052a3;}
+        @media (max-width:1000px){.bulk-measurements-grid{grid-template-columns:repeat(2,1fr);} }
+        @media (max-width:640px){.bulk-measurements-grid{grid-template-columns:1fr;} }
+
         .required {
             color: #d9534f;
         }
@@ -295,10 +307,6 @@
         <div class="form-header">
             <h1>Custom Pool Cover Quote Request</h1>
             <p>Fill out the form below and we'll provide you with a personalized quote</p>
-            <div style="margin-top:1rem;">
-                <a href="custom-quote-sheet.html" class="btn-to-sheet" style="display:inline-block;background:#0066cc;color:#fff;text-decoration:none;padding:0.6rem 1rem;border-radius:5px;font-weight:600;font-size:0.9rem;">Open Printable Sheet</a>
-                <a href="custom-quote-sheet.html?print" class="btn-to-sheet" style="display:inline-block;background:#555;color:#fff;text-decoration:none;padding:0.6rem 1rem;border-radius:5px;font-weight:600;font-size:0.9rem;margin-left:0.5rem;">Open & Print</a>
-            </div>
         </div>
 
         <form id="customQuoteForm">
@@ -336,7 +344,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="state">State</label>
+                    <label for="state">State/Province</label>
                     <input type="text" id="state" name="state">
                 </div>
             </div>
@@ -349,13 +357,14 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="howDidYouHear">How did you hear about us?</label>
-                    <select id="howDidYouHear" name="howDidYouHear">
-                        <option value="">Select an option</option>
-                        <option value="google">Google Search</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="instagram">Instagram</option>
-                        <option value="referral">Referral</option>
+                    <label for="poolShape">Pool Shape <span class="required">*</span></label>
+                    <select id="poolShape" name="poolShape" required>
+                        <option value="">Select a shape</option>
+                        <option value="rectangle">Rectangle</option>
+                        <option value="lazy-l">Lazy-L / L-Shape</option>
+                        <option value="oval">Oval</option>
+                        <option value="kidney">Kidney</option>
+                        <option value="freeform">Freeform</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
@@ -364,97 +373,52 @@
             <!-- Row 5 -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="poolLocation">Pool Location <span class="required">*</span></label>
-                    <select id="poolLocation" name="poolLocation" required>
-                        <option value="">Select location</option>
-                        <option value="inground">In-Ground</option>
-                        <option value="aboveground">Above-Ground</option>
-                    </select>
+                    <label for="poolLength">Pool Length (feet) <span class="required">*</span></label>
+                    <input type="text" id="poolLength" name="poolLength" placeholder="e.g., 20" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="poolShape">Pool Shape <span class="required">*</span></label>
-                    <select id="poolShape" name="poolShape" required>
-                        <option value="">Select a shape</option>
-                        <option value="rectangle">Rectangle</option>
-                        <option value="oval">Oval</option>
-                        <option value="round">Round</option>
-                        <option value="kidney">Kidney</option>
-                        <option value="lazy-l">Lazy-L</option>
-                        <option value="freeform">Freeform</option>
-                        <option value="other">Other</option>
-                    </select>
+                    <label for="poolWidth">Pool Width (feet) <span class="required">*</span></label>
+                    <input type="text" id="poolWidth" name="poolWidth" placeholder="e.g., 40" required>
                 </div>
             </div>
 
             <!-- Row 6 -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="poolLength">Pool Length (ft) <span class="required">*</span></label>
-                    <input type="text" id="poolLength" name="poolLength" required>
+                    <label for="poolDepth">Pool Depth (feet)</label>
+                    <input type="text" id="poolDepth" name="poolDepth" placeholder="e.g., 6">
                 </div>
                 
                 <div class="form-group">
-                    <label for="poolWidth">Pool Width (ft) <span class="required">*</span></label>
-                    <input type="text" id="poolWidth" name="poolWidth" required>
-                </div>
-            </div>
-
-            <!-- Row 7 -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="hasSteps">Does your pool have steps?</label>
-                    <select id="hasSteps" name="hasSteps">
-                        <option value="">Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="hasDivingBoard">Does your pool have a diving board?</label>
-                    <select id="hasDivingBoard" name="hasDivingBoard">
-                        <option value="">Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Row 8 -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="hasSlide">Does your pool have a slide?</label>
-                    <select id="hasSlide" name="hasSlide">
-                        <option value="">Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="hasRails">Does your pool have rails?</label>
-                    <select id="hasRails" name="hasRails">
-                        <option value="">Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                    <label for="coverType">Cover Type <span class="required">*</span></label>
+                    <select id="coverType" name="coverType" required>
+                        <option value="">Select cover type</option>
+                        <option value="safety-cover">Safety Cover</option>
+                        <option value="winter-cover">Winter Cover</option>
+                        <option value="solar-cover">Solar Cover</option>
+                        <option value="automatic-cover">Automatic Cover</option>
                     </select>
                 </div>
             </div>
 
             <!-- Full Width Fields -->
             <div class="form-group">
-                <label for="additionalInfo">Additional Information</label>
-                <textarea id="additionalInfo" name="additionalInfo" placeholder="Please provide any additional details about your pool..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="uploadPhotos">Upload Photos (Optional)</label>
-                <input type="file" id="uploadPhotos" name="uploadPhotos" multiple accept="image/*">
+                <label for="comments">Additional Comments or Special Requirements</label>
+                <textarea id="comments" name="comments" placeholder="Include details about steps, diving boards, rails, or any custom measurements..."></textarea>
             </div>
 
             <button type="submit" class="submit-button">Submit Quote Request</button>
         </form>
+
+        <!-- Bulk measurement form (always visible for detailed custom data) -->
+        <div class="bulk-measurements-wrapper" id="bulk-measurements">
+            <h2>Detailed Custom Measurements</h2>
+            <form id="bulkMeasurementsForm">
+                <div id="bulkMeasurementsGrid" class="bulk-measurements-grid"></div>
+                <button type="submit" class="bulk-submit">Submit Measurements</button>
+            </form>
+        </div>
     </div>
     </div>
 
@@ -535,6 +499,37 @@
             // Optionally redirect back to main page
             window.location.href = 'safety-covers-template.html';
         });
+
+        // Dynamically generate 180 inputs (60 rows x 3 columns)
+        const grid = document.getElementById('bulkMeasurementsGrid');
+        if (grid) {
+            for (let i = 1; i <= 180; i++) {
+                const group = document.createElement('div');
+                group.className = 'field-group';
+                const label = document.createElement('label');
+                label.textContent = 'Field ' + i;
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = 'field_' + i;
+                group.appendChild(label);
+                group.appendChild(input);
+                grid.appendChild(group);
+            }
+        }
+
+        // Handle bulk measurements submission
+        const bulkForm = document.getElementById('bulkMeasurementsForm');
+        if (bulkForm) {
+            bulkForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const data = new FormData(bulkForm);
+                let filled = 0;
+                for (const [k,v] of data.entries()) {
+                    if (v.trim() !== '') filled++;
+                }
+                alert('Submitted ' + filled + ' filled fields out of 180 (demo).');
+            });
+        }
     </script>
 </body>
 </html>
