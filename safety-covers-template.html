@@ -1567,10 +1567,38 @@
             }
         }
         
-        // Update UI after successful login
+        // Update UI after successful login or sign out
         function updateUserUI(user) {
             const userActions = document.querySelector('.user-actions span');
-            userActions.innerHTML = `Contact | <strong>${user.name}</strong> | Cart (0)`;
+            if (user && user.name) {
+                userActions.innerHTML = `Contact | <strong>${user.name}</strong> | <a href="#" id="sign-out-link" class="auth-link">Sign Out</a> | Cart (0)`;
+                const signOutLink = document.getElementById('sign-out-link');
+                if (signOutLink) {
+                    signOutLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        try { localStorage.removeItem('authToken'); } catch (err) {}
+                        // Restore default header auth link
+                        userActions.innerHTML = 'Contact | <a href="#" class="auth-link" id="auth-trigger">Sign In/Up</a> | Cart (0)';
+                        // Rebind auth-trigger to open modal
+                        const newAuthTrigger = document.getElementById('auth-trigger');
+                        if (newAuthTrigger) {
+                            newAuthTrigger.addEventListener('click', (evt) => {
+                                evt.preventDefault();
+                                authModal.classList.add('active');
+                            });
+                        }
+                    });
+                }
+            } else {
+                userActions.innerHTML = 'Contact | <a href="#" class="auth-link" id="auth-trigger">Sign In/Up</a> | Cart (0)';
+                const newAuthTrigger = document.getElementById('auth-trigger');
+                if (newAuthTrigger) {
+                    newAuthTrigger.addEventListener('click', (evt) => {
+                        evt.preventDefault();
+                        authModal.classList.add('active');
+                    });
+                }
+            }
         }
         
         // Check if user is already logged in on page load
