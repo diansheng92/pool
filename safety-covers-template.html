@@ -623,6 +623,41 @@
         .user-actions .auth-link:hover {
             text-decoration: underline;
         }
+
+        /* User menu dropdown */
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .user-menu-toggle {
+            cursor: pointer;
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .user-dropdown {
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            min-width: 180px;
+            padding: 0.5rem;
+            display: none;
+            z-index: 1000;
+        }
+        .user-dropdown a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .user-dropdown a:hover {
+            background: #f5f5f5;
+        }
     </style>
 </head>
 <body>
@@ -1243,14 +1278,12 @@
             
             // Update button link
             const customButton = document.getElementById('custom-quote-button');
-            // Use real external URL for Lazy-L custom options
-            if (shape === 'lazy-l') {
-                customButton.href = 'https://www.poolsuppliescanada.ca/covers/safety-covers/lazy-l-safety-covers/';
-                customButton.target = '_blank';
-                customButton.rel = 'noopener noreferrer';
-            } else {
-                customButton.href = '#';
-            }
+            // Keep as placeholder link for custom quotes
+            customButton.href = '#';
+            customButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Please contact us at support@fivestarpools.com for a custom quote on your ' + shape + ' pool cover.');
+            });
             
             // Show custom message
             document.getElementById('step-custom').classList.add('active');
@@ -1567,26 +1600,46 @@
             }
         }
         
-        // Update UI after successful login or sign out
+        // Update UI after successful login or sign out (with dropdown)
         function updateUserUI(user) {
             const userActions = document.querySelector('.user-actions span');
             if (user && user.name) {
-                userActions.innerHTML = `Contact | <strong>${user.name}</strong> | <a href="#" id="sign-out-link" class="auth-link">Sign Out</a> | Cart (0)`;
+                userActions.innerHTML = `Contact | ` +
+                  `<span class="user-menu">` +
+                  `<a href="#" class="user-menu-toggle" id="user-menu-toggle">${user.name} ▾</a>` +
+                  `<div class="user-dropdown" id="user-dropdown">` +
+                  `<a href="#" id="view-account">Your Account</a>` +
+                  `<a href="#" id="orders">Orders</a>` +
+                  `<hr style="border:none;border-top:1px solid #eee;margin:0.25rem 0;">` +
+                  `<a href="#" id="sign-out-link">Sign Out</a>` +
+                  `</div>` +
+                  `</span> | Cart (0)`;
+
+                const toggle = document.getElementById('user-menu-toggle');
+                const dropdown = document.getElementById('user-dropdown');
                 const signOutLink = document.getElementById('sign-out-link');
+
+                // Toggle dropdown
+                if (toggle && dropdown) {
+                    toggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const isOpen = dropdown.style.display === 'block';
+                        dropdown.style.display = isOpen ? 'none' : 'block';
+                    });
+                    // Close when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!dropdown.contains(e.target) && e.target !== toggle) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Sign out
                 if (signOutLink) {
                     signOutLink.addEventListener('click', (e) => {
                         e.preventDefault();
                         try { localStorage.removeItem('authToken'); } catch (err) {}
-                        // Restore default header auth link
-                        userActions.innerHTML = 'Contact | <a href="#" class="auth-link" id="auth-trigger">Sign In/Up</a> | Cart (0)';
-                        // Rebind auth-trigger to open modal
-                        const newAuthTrigger = document.getElementById('auth-trigger');
-                        if (newAuthTrigger) {
-                            newAuthTrigger.addEventListener('click', (evt) => {
-                                evt.preventDefault();
-                                authModal.classList.add('active');
-                            });
-                        }
+                        updateUserUI(null);
                     });
                 }
             } else {
