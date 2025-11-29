@@ -234,7 +234,7 @@
             background: #0052a3;
         }
 
-        /* Bulk measurement grid (60 lines x 3 columns = 180 fields) */
+        /* Bulk measurement grid (60 lines x 2 columns = 120 fields) */
         .bulk-measurements-wrapper {margin-top:3rem;background:#fff;border:1px solid #ddd;border-radius:10px;padding:2rem;}
         .bulk-measurements-wrapper h2 {text-align:center;font-size:1.8rem;margin-bottom:1.25rem;color:#0066cc;}
         .bulk-measurements-table {width:100%;border-collapse:collapse;font-size:0.75rem;}
@@ -420,7 +420,7 @@
 
         <!-- Bulk measurement form (always visible for detailed custom data) -->
         <div class="bulk-measurements-wrapper" id="bulk-measurements">
-            <h2>Detailed Custom Measurements (60 x 3)</h2>
+            <h2>Detailed Custom Measurements (60 x 2)</h2>
             <form id="bulkMeasurementsForm">
                 <table class="bulk-measurements-table">
                     <thead>
@@ -428,7 +428,6 @@
                             <th style="width:40px;">#</th>
                             <th>Measurement A</th>
                             <th>Measurement B</th>
-                            <th>Measurement C</th>
                         </tr>
                     </thead>
                     <tbody id="bulkMeasurementsBody"></tbody>
@@ -517,8 +516,7 @@
             window.location.href = 'safety-covers-template.html';
         });
 
-        // Dynamically generate 180 inputs (60 rows x 3 columns)
-        // Build 60 rows * 3 columns (A,B,C)
+        // Build 60 rows * 2 columns (A,B) => 120 inputs total
         const bodyEl = document.getElementById('bulkMeasurementsBody');
         if (bodyEl) {
             for (let r = 1; r <= 60; r++) {
@@ -527,13 +525,13 @@
                 indexTd.className = 'index-cell';
                 indexTd.textContent = r;
                 tr.appendChild(indexTd);
-                for (let c = 1; c <= 3; c++) {
+                for (let c = 1; c <= 2; c++) {
                     const td = document.createElement('td');
-                    td.setAttribute('data-label', 'Measurement ' + (c === 1 ? 'A' : c === 2 ? 'B' : 'C'));
+                    td.setAttribute('data-label', 'Measurement ' + (c === 1 ? 'A' : 'B'));
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.name = 'row' + r + '_col' + c;
-                    input.placeholder = 'R' + r + ' ' + (c === 1 ? 'A' : c === 2 ? 'B' : 'C');
+                    input.placeholder = 'R' + r + ' ' + (c === 1 ? 'A' : 'B');
                     td.appendChild(input);
                     tr.appendChild(td);
                 }
@@ -549,7 +547,7 @@
                 const data = new FormData(bulkForm);
                 let filled = 0;
                 for (const [k,v] of data.entries()) { if (v.trim() !== '') filled++; }
-                alert('Submitted ' + filled + ' filled fields out of 180 (60 rows * 3 cols) (demo).');
+                alert('Submitted ' + filled + ' filled fields out of 120 (60 rows * 2 cols) (demo).');
             });
         }
     </script>
