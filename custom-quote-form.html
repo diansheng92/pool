@@ -320,12 +320,12 @@
             <!-- Row 1 -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="name">Name <span class="required">*</span></label>
+                    <label for="name">Company <span class="required">*</span></label>
                     <input type="text" id="name" name="name" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email <span class="required">*</span></label>
+                    <label for="email">Tag Name <span class="required">*</span></label>
                     <input type="email" id="email" name="email" required>
                 </div>
             </div>
@@ -333,89 +333,64 @@
             <!-- Row 2 -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="phone">Phone <span class="required">*</span></label>
+                    <label for="phone">P.O # <span class="required">*</span></label>
                     <input type="tel" id="phone" name="phone" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address">
+                    <label for="delivery">Delivery</label>
+                    <select id="delivery" name="delivery">
+                        <option value="ship" selected>Ship</option>
+                        <option value="pickup">Pickup</option>
+                    </select>
                 </div>
             </div>
 
             <!-- Row 3 -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="city">City</label>
+                    <label for="city">Size & Shape</label>
                     <input type="text" id="city" name="city">
                 </div>
                 
                 <div class="form-group">
-                    <label for="state">State/Province</label>
-                    <input type="text" id="state" name="state">
-                </div>
-            </div>
-
-            <!-- Row 4 -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="zipCode">Zip Code</label>
-                    <input type="text" id="zipCode" name="zipCode">
-                </div>
-                
-                <div class="form-group">
-                    <label for="poolShape">Pool Shape <span class="required">*</span></label>
-                    <select id="poolShape" name="poolShape" required>
-                        <option value="">Select a shape</option>
-                        <option value="rectangle">Rectangle</option>
-                        <option value="lazy-l">Lazy-L / L-Shape</option>
-                        <option value="oval">Oval</option>
-                        <option value="kidney">Kidney</option>
-                        <option value="freeform">Freeform</option>
-                        <option value="other">Other</option>
-                    </select>
+                    <label>Order Type <span class="required">*</span></label>
+                    <div style="display: flex; gap: 2rem; align-items: center;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: normal; margin: 0;">
+                            <input type="checkbox" name="poolShape" value="quote">
+                            Quote
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: normal; margin: 0;">
+                            <input type="checkbox" name="poolShape" value="order">
+                            Order
+                        </label>
+                    </div>
                 </div>
             </div>
 
             <!-- Row 5 -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="poolLength">Pool Length (feet) <span class="required">*</span></label>
-                    <input type="text" id="poolLength" name="poolLength" placeholder="e.g., 20" required>
+                    <label for="gridSize">Grid Size <span class="required">*</span></label>
+                    <select id="gridSize" name="gridSize" required>
+                        <option value="5x5">5*5</option>
+                        <option value="3x3" selected>3*3</option>
+                    </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="poolWidth">Pool Width (feet) <span class="required">*</span></label>
-                    <input type="text" id="poolWidth" name="poolWidth" placeholder="e.g., 40" required>
-                </div>
-            </div>
-
-            <!-- Row 6 -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="poolDepth">Pool Depth (feet)</label>
-                    <input type="text" id="poolDepth" name="poolDepth" placeholder="e.g., 6">
-                </div>
-                
-                <div class="form-group">
-                    <label for="coverType">Cover Type <span class="required">*</span></label>
+                    <label for="coverType">Colour <span class="required">*</span></label>
                     <select id="coverType" name="coverType" required>
-                        <option value="">Select cover type</option>
-                        <option value="safety-cover">Safety Cover</option>
-                        <option value="winter-cover">Winter Cover</option>
-                        <option value="solar-cover">Solar Cover</option>
-                        <option value="automatic-cover">Automatic Cover</option>
+                        <option value="">Select colour</option>
+                        <option value="green">Green</option>
+                        <option value="blue">Blue</option>
+                        <option value="black">Black</option>
+                        <option value="taupe">Taupe</option>
+                        <option value="grey">Grey</option>
+                        <option value="ultra">Ultra</option>
                     </select>
                 </div>
             </div>
-
-            <!-- Full Width Fields -->
-            <div class="form-group">
-                <label for="comments">Additional Comments or Special Requirements</label>
-                <textarea id="comments" name="comments" placeholder="Include details about steps, diving boards, rails, or any custom measurements..."></textarea>
-            </div>
-
-            <button type="submit" class="submit-button">Submit Quote Request</button>
         </form>
 
         <!-- Bulk measurement form (always visible for detailed custom data) -->
@@ -432,9 +407,18 @@
                     </thead>
                     <tbody id="bulkMeasurementsBody"></tbody>
                 </table>
-                <button type="submit" class="bulk-submit">Submit Measurements</button>
             </form>
         </div>
+
+        <!-- Full Width Fields -->
+        <div style="margin-top: 2rem;">
+            <div class="form-group">
+                <label for="comments">Additional Comments or Special Requirements</label>
+                <textarea id="comments" name="comments" placeholder="Include details about steps, diving boards, rails, or any custom measurements..."></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-button" style="margin-top: 2rem;">Submit Quote Request</button>
     </div>
     </div>
 
