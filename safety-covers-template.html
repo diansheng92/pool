@@ -720,9 +720,9 @@
                     <img src="images/rectangle.png" alt="Rectangle Shape">
                     <h4>Rectangle</h4>
                 </div>
-                <div class="shape-card" data-shape="lazy-l">
-                    <img src="images/lazy-l.png" alt="Lazy-L Shape">
-                    <h4>Lazy-L</h4>
+                <div class="shape-card" data-shape="customized">
+                    <img src="images/lazy-l.png" alt="Customized Shape">
+                    <h4>Customized</h4>
                 </div>
             </div>
         </section>
@@ -788,16 +788,16 @@
             </div>
         </section>
         
-        <!-- Custom Cover Message (for Lazy-L and other custom shapes) -->
+        <!-- Custom Cover Message (for Customized and other custom shapes) -->
         <section class="config-step" id="step-custom">
             <div class="custom-cover-message">
                 <div class="step-display">
-                    <strong>Step 1: Shape:</strong> <span id="custom-shape-name">Lazy-L</span> ✓<br>
+                    <strong>Step 1: Shape:</strong> <span id="custom-shape-name">Customized</span> ✓<br>
                     <strong>Step 2: Send Measurements</strong>
                 </div>
                 <h3>Looks like your pool requires a custom safety cover</h3>
                 <p>Click below to get a FREE quote!</p>
-                <a href="#" class="cta-button" id="custom-quote-button">Click here for custom <span id="custom-shape-link">Lazy-L</span> options</a>
+                <a href="#" class="cta-button" id="custom-quote-button">Click here for custom <span id="custom-shape-link">Customized</span> options</a>
                 <p style="margin-top: 2rem; font-size: 0.95rem; color: #666;">
                     * Turnaround times listed online begin after payment has been made, and the order is submitted for manufacturing
                 </p>
@@ -1168,7 +1168,7 @@
             oval: [
                 "12' x 24'", "15' x 30'", "18' x 36'", "20' x 40'"
             ],
-            'lazy-l': [
+            'customized': [
                 "16' x 32'", "18' x 36'", "20' x 40'"
             ],
             'square-l': [
@@ -1188,7 +1188,7 @@
             rectangle: { hasCorner: true, hasStep: true, hasSize: true },
             grecian: { hasCorner: true, hasStep: true, hasSize: true },
             oval: { hasCorner: false, hasStep: false, hasSize: true },
-            'lazy-l': { hasCorner: false, hasStep: false, hasSize: false, requiresCustom: true },  // Lazy-L requires custom cover
+            'customized': { hasCorner: false, hasStep: false, hasSize: false, requiresCustom: true },  // Customized requires custom cover
             'square-l': { hasCorner: false, hasStep: true, hasSize: true },
             round: { hasCorner: false, hasStep: false, hasSize: true },
             roman: { hasCorner: true, hasStep: true, hasSize: true }
