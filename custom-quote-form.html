@@ -237,15 +237,22 @@
         /* Bulk measurement grid (60 lines x 3 columns = 180 fields) */
         .bulk-measurements-wrapper {margin-top:3rem;background:#fff;border:1px solid #ddd;border-radius:10px;padding:2rem;}
         .bulk-measurements-wrapper h2 {text-align:center;font-size:1.8rem;margin-bottom:1.25rem;color:#0066cc;}
-        .bulk-measurements-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;}
-        .bulk-measurements-grid .field-group {display:flex;flex-direction:column;}
-        .bulk-measurements-grid .field-group label {font-size:0.65rem;font-weight:600;margin-bottom:0.25rem;color:#333;letter-spacing:0.5px;}
-        .bulk-measurements-grid .field-group input {padding:0.5rem 0.55rem;border:1px solid #ccc;border-radius:4px;font-size:0.75rem;}
-        .bulk-measurements-grid .field-group input:focus {outline:none;border-color:#0066cc;}
-        .bulk-submit {display:block;margin:2rem auto 0 auto;background:#0066cc;color:#fff;border:none;border-radius:6px;padding:0.9rem 2rem;font-size:1rem;font-weight:600;cursor:pointer;}
+        .bulk-measurements-table {width:100%;border-collapse:collapse;font-size:0.75rem;}
+        .bulk-measurements-table thead th {background:#0066cc;color:#fff;padding:0.5rem;border:1px solid #0052a3;font-weight:600;letter-spacing:0.5px;}
+        .bulk-measurements-table tbody td {border:1px solid #ccc;padding:0.35rem;}
+        .bulk-measurements-table tbody td.index-cell {background:#f0f4f8;font-weight:600;text-align:center;color:#333;}
+        .bulk-measurements-table input[type="text"] {width:100%;padding:0.35rem 0.4rem;border:1px solid #bbb;border-radius:4px;font-size:0.7rem;}
+        .bulk-measurements-table input[type="text"]:focus {outline:none;border-color:#0066cc;}
+        .bulk-submit {display:inline-block;margin-top:1.25rem;background:#0066cc;color:#fff;border:none;border-radius:6px;padding:0.7rem 1.5rem;font-size:0.85rem;font-weight:600;cursor:pointer;}
         .bulk-submit:hover {background:#0052a3;}
-        @media (max-width:1000px){.bulk-measurements-grid{grid-template-columns:repeat(2,1fr);} }
-        @media (max-width:640px){.bulk-measurements-grid{grid-template-columns:1fr;} }
+        @media (max-width:700px){
+            .bulk-measurements-table thead {display:none;}
+            .bulk-measurements-table, .bulk-measurements-table tbody, .bulk-measurements-table tr, .bulk-measurements-table td {display:block;width:100%;}
+            .bulk-measurements-table tr {margin-bottom:0.75rem;border:1px solid #ddd;border-radius:6px;overflow:hidden;padding:0.5rem;background:#fafafa;}
+            .bulk-measurements-table tbody td.index-cell {text-align:left;}
+            .bulk-measurements-table tbody td {border:none;padding:0.25rem 0;}
+            .bulk-measurements-table tbody td[data-label]::before {content:attr(data-label)": ";font-weight:600;color:#222;}
+        }
 
         .required {
             color: #d9534f;
@@ -413,9 +420,19 @@
 
         <!-- Bulk measurement form (always visible for detailed custom data) -->
         <div class="bulk-measurements-wrapper" id="bulk-measurements">
-            <h2>Detailed Custom Measurements</h2>
+            <h2>Detailed Custom Measurements (60 x 3)</h2>
             <form id="bulkMeasurementsForm">
-                <div id="bulkMeasurementsGrid" class="bulk-measurements-grid"></div>
+                <table class="bulk-measurements-table">
+                    <thead>
+                        <tr>
+                            <th style="width:40px;">#</th>
+                            <th>Measurement A</th>
+                            <th>Measurement B</th>
+                            <th>Measurement C</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bulkMeasurementsBody"></tbody>
+                </table>
                 <button type="submit" class="bulk-submit">Submit Measurements</button>
             </form>
         </div>
@@ -501,19 +518,26 @@
         });
 
         // Dynamically generate 180 inputs (60 rows x 3 columns)
-        const grid = document.getElementById('bulkMeasurementsGrid');
-        if (grid) {
-            for (let i = 1; i <= 180; i++) {
-                const group = document.createElement('div');
-                group.className = 'field-group';
-                const label = document.createElement('label');
-                label.textContent = 'Field ' + i;
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.name = 'field_' + i;
-                group.appendChild(label);
-                group.appendChild(input);
-                grid.appendChild(group);
+        // Build 60 rows * 3 columns (A,B,C)
+        const bodyEl = document.getElementById('bulkMeasurementsBody');
+        if (bodyEl) {
+            for (let r = 1; r <= 60; r++) {
+                const tr = document.createElement('tr');
+                const indexTd = document.createElement('td');
+                indexTd.className = 'index-cell';
+                indexTd.textContent = r;
+                tr.appendChild(indexTd);
+                for (let c = 1; c <= 3; c++) {
+                    const td = document.createElement('td');
+                    td.setAttribute('data-label', 'Measurement ' + (c === 1 ? 'A' : c === 2 ? 'B' : 'C'));
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = 'row' + r + '_col' + c;
+                    input.placeholder = 'R' + r + ' ' + (c === 1 ? 'A' : c === 2 ? 'B' : 'C');
+                    td.appendChild(input);
+                    tr.appendChild(td);
+                }
+                bodyEl.appendChild(tr);
             }
         }
 
@@ -524,10 +548,8 @@
                 e.preventDefault();
                 const data = new FormData(bulkForm);
                 let filled = 0;
-                for (const [k,v] of data.entries()) {
-                    if (v.trim() !== '') filled++;
-                }
-                alert('Submitted ' + filled + ' filled fields out of 180 (demo).');
+                for (const [k,v] of data.entries()) { if (v.trim() !== '') filled++; }
+                alert('Submitted ' + filled + ' filled fields out of 180 (60 rows * 3 cols) (demo).');
             });
         }
     </script>
