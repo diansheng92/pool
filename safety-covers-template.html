@@ -869,7 +869,7 @@
                 </div>
                 <h3>Looks like your pool requires a custom safety cover</h3>
                 <p>Click below to get a FREE quote!</p>
-                <a href="#" class="cta-button" id="custom-quote-button">Click here for custom <span id="custom-shape-link">Customized</span> options</a>
+                <a href="custom-quote-form.html" class="cta-button" id="custom-quote-button">Click here for custom <span id="custom-shape-link">Customized</span> options</a>
                 <p style="margin-top: 2rem; font-size: 0.95rem; color: #666;">
                     * Turnaround times listed online begin after payment has been made, and the order is submitted for manufacturing
                 </p>
@@ -1323,14 +1323,7 @@
             document.getElementById('custom-shape-name').textContent = shapeName;
             document.getElementById('custom-shape-link').textContent = shapeName;
             
-            // Update button link
-            const customButton = document.getElementById('custom-quote-button');
-            // Keep as placeholder link for custom quotes
-            customButton.href = '#';
-            customButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                alert('Please contact us at support@fivestarpools.com for a custom quote on your ' + shape + ' pool cover.');
-            });
+            // Button already has href="custom-quote-form.html" in HTML, no need to override
             
             // Show custom message
             document.getElementById('step-custom').classList.add('active');

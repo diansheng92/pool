@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Pool Cover Quote Request</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #222;
+            background: #f5f5f5;
+        }
+
+        /* Header Styles */
+        .header {
+            background: #fff;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .top-bar .logo {
+            font-size: 1.4rem;
+        }
+        
+        .user-actions {
+            font-size: 1.05rem;
+        }
+
+        .user-actions a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .user-actions a:hover {
+            text-decoration: underline;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        .nav a:hover {
+            color: #0066cc;
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            padding: 1rem 2rem;
+            background: #f8f8f8;
+            font-size: 1.05rem;
+        }
+
+        .breadcrumbs a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        /* User menu dropdown */
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .user-menu-toggle {
+            cursor: pointer;
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .user-dropdown {
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            min-width: 180px;
+            padding: 0.5rem;
+            display: none;
+            z-index: 1000;
+        }
+        .user-dropdown a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .user-dropdown a:hover {
+            background: #f5f5f5;
+        }
+
+        /* Form Container */
+        .form-wrapper {
+            padding: 2rem 1rem;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #0066cc;
+        }
+
+        .form-header h1 {
+            font-size: 2.5rem;
+            color: #0066cc;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-section h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 1.2rem;
+            background: #0066cc;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-button:hover {
+            background: #0052a3;
+        }
+
+        .required {
+            color: #d9534f;
+        }
+
+        .info-text {
+            font-size: 0.95rem;
+            color: #666;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="top-bar">
+            <div class="logo">
+                <strong>Five Star Pools</strong>
+            </div>
+            <div class="user-actions">
+                <span>Contact | <a href="#" class="auth-link" id="auth-trigger">Sign In/Up</a> | Cart (0)</span>
+            </div>
+        </div>
+        <nav>
+            <ul class="nav">
+                <li><a href="safety-covers-template.html">Winter</a></li>
+                <li><a href="#chemicals">Chemicals</a></li>
+                <li><a href="#equipment">Equipment</a></li>
+                <li><a href="#liners">Liners</a></li>
+                <li><a href="#covers">Covers</a></li>
+                <li><a href="#accessories">Accessories</a></li>
+                <li><a href="#clearance">Clearance</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <a href="safety-covers-template.html">Home</a> &gt; <a href="safety-covers-template.html">Covers</a> &gt; <strong>Custom Quote Request</strong>
+    </div>
+
+    <div class="form-wrapper">
+    <div class="form-container">
+        <div class="form-header">
+            <h1>Custom Pool Cover Quote Request</h1>
+            <p>Fill out the form below and we'll provide you with a personalized quote</p>
+        </div>
+
+        <form id="customQuoteForm">
+            <!-- Contact Information -->
+            <div class="form-section">
+                <h2>Contact Information</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postalCode">Postal Code</label>
+                        <input type="text" id="postalCode" name="postalCode">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pool Information -->
+            <div class="form-section">
+                <h2>Pool Information</h2>
+                
+                <div class="form-group">
+                    <label for="poolShape">Pool Shape <span class="required">*</span></label>
+                    <select id="poolShape" name="poolShape" required>
+                        <option value="">Select a shape</option>
+                        <option value="rectangle">Rectangle</option>
+                        <option value="lazy-l">Lazy-L / L-Shape</option>
+                        <option value="oval">Oval</option>
+                        <option value="kidney">Kidney</option>
+                        <option value="freeform">Freeform</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="poolLength">Pool Length (feet) <span class="required">*</span></label>
+                        <input type="text" id="poolLength" name="poolLength" placeholder="e.g., 20" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="poolWidth">Pool Width (feet) <span class="required">*</span></label>
+                        <input type="text" id="poolWidth" name="poolWidth" placeholder="e.g., 40" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="poolType">Pool Type</label>
+                    <select id="poolType" name="poolType">
+                        <option value="">Select pool type</option>
+                        <option value="inground">In-Ground</option>
+                        <option value="aboveground">Above-Ground</option>
+                        <option value="semi-inground">Semi In-Ground</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Cover Preferences -->
+            <div class="form-section">
+                <h2>Cover Preferences</h2>
+                
+                <div class="form-group">
+                    <label for="coverType">Cover Type <span class="required">*</span></label>
+                    <select id="coverType" name="coverType" required>
+                        <option value="">Select cover type</option>
+                        <option value="safety-cover">Safety Cover</option>
+                        <option value="winter-cover">Winter Cover</option>
+                        <option value="solar-cover">Solar Cover</option>
+                        <option value="automatic-cover">Automatic Cover</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Cover Color</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="colorBlue" name="coverColors" value="blue">
+                            <label for="colorBlue">Blue</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="colorGreen" name="coverColors" value="green">
+                            <label for="colorGreen">Green</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="colorGray" name="coverColors" value="gray">
+                            <label for="colorGray">Gray</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="colorBlack" name="coverColors" value="black">
+                            <label for="colorBlack">Black</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="colorTan" name="coverColors" value="tan">
+                            <label for="colorTan">Tan</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalFeatures">Additional Features or Special Requirements</label>
+                    <textarea id="additionalFeatures" name="additionalFeatures" placeholder="Please describe any special features, obstacles around the pool, steps, diving boards, etc."></textarea>
+                    <p class="info-text">Include details about steps, diving boards, rails, or any custom measurements</p>
+                </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="form-section">
+                <h2>Additional Information</h2>
+                
+                <div class="form-group">
+                    <label for="timeframe">When do you need the cover?</label>
+                    <select id="timeframe" name="timeframe">
+                        <option value="">Select timeframe</option>
+                        <option value="asap">As soon as possible</option>
+                        <option value="1-2weeks">1-2 weeks</option>
+                        <option value="3-4weeks">3-4 weeks</option>
+                        <option value="1-2months">1-2 months</option>
+                        <option value="flexible">Flexible</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget">Budget Range</label>
+                    <select id="budget" name="budget">
+                        <option value="">Select budget range</option>
+                        <option value="under-500">Under $500</option>
+                        <option value="500-1000">$500 - $1,000</option>
+                        <option value="1000-2000">$1,000 - $2,000</option>
+                        <option value="2000-3000">$2,000 - $3,000</option>
+                        <option value="over-3000">Over $3,000</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="comments">Additional Comments or Questions</label>
+                    <textarea id="comments" name="comments" placeholder="Any other information you'd like us to know..."></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">Submit Quote Request</button>
+        </form>
+    </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        // Check if user is logged in and update UI
+        function updateUserUI() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                fetch(`${API_URL}/api/user`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => response.json())
+                .then(user => {
+                    const userActionsDiv = document.querySelector('.user-actions span');
+                    userActionsDiv.innerHTML = `Contact | <span class="user-menu">
+                        <a href="#" class="user-menu-toggle">${user.name} ▾</a>
+                        <div class="user-dropdown">
+                            <a href="#">Your Account</a>
+                            <a href="#">Orders</a>
+                            <a href="#" id="sign-out">Sign Out</a>
+                        </div>
+                    </span> | Cart (0)`;
+
+                    // Toggle dropdown
+                    const toggle = document.querySelector('.user-menu-toggle');
+                    const dropdown = document.querySelector('.user-dropdown');
+                    toggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    });
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!e.target.closest('.user-menu')) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+
+                    // Sign out handler
+                    document.getElementById('sign-out').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('token');
+                        window.location.reload();
+                    });
+                })
+                .catch(err => {
+                    console.error('Error fetching user:', err);
+                    localStorage.removeItem('token');
+                });
+            }
+        }
+
+        // Initialize on page load
+        updateUserUI();
+
+        document.getElementById('customQuoteForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Collect form data
+            const formData = new FormData(e.target);
+            const data = {};
+            
+            // Handle regular fields
+            for (let [key, value] of formData.entries()) {
+                if (key === 'coverColors') {
+                    if (!data.coverColors) {
+                        data.coverColors = [];
+                    }
+                    data.coverColors.push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+
+            // Get checked color options
+            const colorCheckboxes = document.querySelectorAll('input[name="coverColors"]:checked');
+            data.coverColors = Array.from(colorCheckboxes).map(cb => cb.value);
+
+            console.log('Quote Request Data:', data);
+
+            // TODO: Send to backend API
+            // For now, just show success message
+            alert('Thank you for your quote request! We will contact you within 24 hours with a personalized quote.');
+            
+            // Optionally redirect back to main page
+            window.location.href = 'safety-covers-template.html';
+        });
+    </script>
+</body>
+</html>
