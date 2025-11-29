@@ -1368,16 +1368,17 @@
             document.querySelectorAll('.step').forEach((step, index) => {
                 const stepNum = index + 1;
                 step.classList.remove('active', 'completed');
-                step.style.opacity = '1';
+                step.style.opacity = '';
+                step.style.textDecoration = '';
                 
                 // Dim steps that are skipped for this shape
                 if (config.workflow) {
                     if (stepNum === 2 && !config.workflow.hasCorner) {
-                        step.style.opacity = '0.3';
+                        step.style.opacity = '0.5';
                         step.style.textDecoration = 'line-through';
                     }
                     if (stepNum === 3 && !config.workflow.hasStep) {
-                        step.style.opacity = '0.3';
+                        step.style.opacity = '0.5';
                         step.style.textDecoration = 'line-through';
                     }
                 }
