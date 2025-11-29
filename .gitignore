@@ -48,10 +48,4 @@ package-lock.json
 npm-debug.log*
 
 # Images
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.svg
-*.webp
-images/
+IMG_0381*
