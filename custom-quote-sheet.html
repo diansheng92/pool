@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Custom Pool Cover Quote Sheet</title>
+<style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; margin: 0; padding: 1.5rem; background: #f5f5f5; }
+    .sheet-wrapper { max-width: 1000px; margin: 0 auto; background: #fff; padding: 2rem 2.5rem; border: 1px solid #ccc; border-radius: 8px; }
+    h1 { text-align: center; margin: 0 0 1rem; color: #0066cc; }
+    .subtitle { text-align: center; margin-bottom: 2rem; font-size: 0.95rem; color: #555; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    th, td { border: 1px solid #999; padding: 0.6rem 0.5rem; vertical-align: top; }
+    th { background: #e9f2fb; text-align: left; font-weight: 600; }
+    .section-header { background: #0066cc; color: #fff; font-weight: 700; text-align: center; }
+    .two-col td { width: 50%; }
+    .notes-area { height: 140px; }
+    .files-row td { height: 60px; }
+    .print-actions { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+    .btn { background: #0066cc; color: #fff; border: none; padding: 0.75rem 1.25rem; font-size: 0.95rem; border-radius: 5px; cursor: pointer; font-weight: 600; }
+    .btn.secondary { background: #555; }
+    .btn:hover { background: #0052a3; }
+    .footer-hint { font-size: 0.75rem; color: #666; text-align: center; margin-top: 1rem; }
+    @media print {
+        body { background: #fff; padding: 0; }
+        .print-actions { display: none !important; }
+        .sheet-wrapper { border: none; padding: 0; }
+        .footer-hint { display: none; }
+        .no-print { display: none !important; }
+    }
+    .fill-line { display: inline-block; min-width: 180px; border-bottom: 1px solid #666; }
+</style>
+</head>
+<body>
+    <div class="sheet-wrapper">
+        <div class="print-actions no-print">
+            <button class="btn" onclick="window.print()">Print Sheet</button>
+            <button class="btn secondary" onclick="window.location.href='custom-quote-form.html'">Back to Form</button>
+        </div>
+        <h1>Custom Pool Cover Quote Sheet</h1>
+        <div class="subtitle">Fill in all applicable fields. Attach photos if available.</div>
+        <table>
+            <tr><th class="section-header" colspan="2">Contact Information</th></tr>
+            <tr class="two-col">
+                <td>Name:<br><span class="fill-line"></span></td>
+                <td>Email:<br><span class="fill-line"></span></td>
+            </tr>
+            <tr class="two-col">
+                <td>Phone:<br><span class="fill-line"></span></td>
+                <td>Address:<br><span class="fill-line" style="min-width:240px"></span></td>
+            </tr>
+            <tr class="two-col">
+                <td>City:<br><span class="fill-line"></span></td>
+                <td>State / Province:<br><span class="fill-line"></span></td>
+            </tr>
+            <tr class="two-col">
+                <td>Zip / Postal Code:<br><span class="fill-line"></span></td>
+                <td>How did you hear about us?:<br><span class="fill-line" style="min-width:240px"></span></td>
+            </tr>
+        </table>
+        <table>
+            <tr><th class="section-header" colspan="2">Pool Details</th></tr>
+            <tr class="two-col">
+                <td>Pool Location (In-Ground / Above-Ground):<br><span class="fill-line" style="min-width:240px"></span></td>
+                <td>Pool Shape:<br><span class="fill-line" style="min-width:240px"></span></td>
+            </tr>
+            <tr class="two-col">
+                <td>Pool Length (ft):<br><span class="fill-line"></span></td>
+                <td>Pool Width (ft):<br><span class="fill-line"></span></td>
+            </tr>
+            <tr class="two-col">
+                <td>Depth (if relevant):<br><span class="fill-line"></span></td>
+                <td>Steps (Yes / No & location):<br><span class="fill-line" style="min-width:240px"></span></td>
+            </tr>
+            <tr class="two-col">
+                <td>Diving Board (Yes / No):<br><span class="fill-line"></span></td>
+                <td>Slide (Yes / No):<br><span class="fill-line"></span></td>
+            </tr>
+            <tr class="two-col">
+                <td>Rails (Yes / No & count):<br><span class="fill-line" style="min-width:240px"></span></td>
+                <td>Other Accessories:<br><span class="fill-line" style="min-width:240px"></span></td>
+            </tr>
+        </table>
+        <table>
+            <tr><th class="section-header" colspan="2">Cover Preferences</th></tr>
+            <tr class="two-col">
+                <td>Cover Type Desired:<br><span class="fill-line" style="min-width:240px"></span></td>
+                <td>Color Preference(s):<br><span class="fill-line" style="min-width:240px"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2">Additional Information / Obstacles / Special Requirements:<br><div class="notes-area"></div></td>
+            </tr>
+            <tr>
+                <td colspan="2">Notes (Internal Use):<br><div class="notes-area" style="height:100px"></div></td>
+            </tr>
+        </table>
+        <table>
+            <tr><th class="section-header" colspan="2">Photos / Sketch</th></tr>
+            <tr class="files-row">
+                <td style="width:50%">Photo References Attached (circle): YES / NO</td>
+                <td style="width:50%">Sketch Provided: YES / NO</td>
+            </tr>
+            <tr>
+                <td colspan="2">Internal Processing / Quote #: <span class="fill-line" style="min-width:220px"></span>  Date: <span class="fill-line" style="min-width:160px"></span></td>
+            </tr>
+        </table>
+        <div class="footer-hint">Print, fill manually, or use digitally. Return via email with photos to support@fivestarpools.com.</div>
+    </div>
+<script>
+// Auto-print toggle query param (?print)
+if (window.location.search.includes('print')) {
+    window.print();
+}
+</script>
+</body>
+</html>

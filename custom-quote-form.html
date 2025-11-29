@@ -150,18 +150,6 @@
             color: #666;
         }
 
-        .form-section {
-            margin-bottom: 2.5rem;
-        }
-
-        .form-section h2 {
-            font-size: 1.8rem;
-            color: #333;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #ddd;
-        }
-
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -176,6 +164,7 @@
         .form-group input[type="text"],
         .form-group input[type="email"],
         .form-group input[type="tel"],
+        .form-group input[type="file"],
         .form-group textarea,
         .form-group select {
             width: 100%;
@@ -306,175 +295,162 @@
         <div class="form-header">
             <h1>Custom Pool Cover Quote Request</h1>
             <p>Fill out the form below and we'll provide you with a personalized quote</p>
+            <div style="margin-top:1rem;">
+                <a href="custom-quote-sheet.html" class="btn-to-sheet" style="display:inline-block;background:#0066cc;color:#fff;text-decoration:none;padding:0.6rem 1rem;border-radius:5px;font-weight:600;font-size:0.9rem;">Open Printable Sheet</a>
+                <a href="custom-quote-sheet.html?print" class="btn-to-sheet" style="display:inline-block;background:#555;color:#fff;text-decoration:none;padding:0.6rem 1rem;border-radius:5px;font-weight:600;font-size:0.9rem;margin-left:0.5rem;">Open & Print</a>
+            </div>
         </div>
 
         <form id="customQuoteForm">
-            <!-- Contact Information -->
-            <div class="form-section">
-                <h2>Contact Information</h2>
+            <!-- Row 1 -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required>
+                </div>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstName">First Name <span class="required">*</span></label>
-                        <input type="text" id="firstName" name="firstName" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="lastName">Last Name <span class="required">*</span></label>
-                        <input type="text" id="lastName" name="lastName" required>
-                    </div>
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone Number <span class="required">*</span></label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
+            <!-- Row 2 -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Phone <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required>
                 </div>
-
+                
                 <div class="form-group">
                     <label for="address">Address</label>
                     <input type="text" id="address" name="address">
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" id="city" name="city">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="postalCode">Postal Code</label>
-                        <input type="text" id="postalCode" name="postalCode">
-                    </div>
+            <!-- Row 3 -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city">
+                </div>
+                
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state" name="state">
                 </div>
             </div>
 
-            <!-- Pool Information -->
-            <div class="form-section">
-                <h2>Pool Information</h2>
+            <!-- Row 4 -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="zipCode">Zip Code</label>
+                    <input type="text" id="zipCode" name="zipCode">
+                </div>
+                
+                <div class="form-group">
+                    <label for="howDidYouHear">How did you hear about us?</label>
+                    <select id="howDidYouHear" name="howDidYouHear">
+                        <option value="">Select an option</option>
+                        <option value="google">Google Search</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="referral">Referral</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 5 -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="poolLocation">Pool Location <span class="required">*</span></label>
+                    <select id="poolLocation" name="poolLocation" required>
+                        <option value="">Select location</option>
+                        <option value="inground">In-Ground</option>
+                        <option value="aboveground">Above-Ground</option>
+                    </select>
+                </div>
                 
                 <div class="form-group">
                     <label for="poolShape">Pool Shape <span class="required">*</span></label>
                     <select id="poolShape" name="poolShape" required>
                         <option value="">Select a shape</option>
                         <option value="rectangle">Rectangle</option>
-                        <option value="lazy-l">Lazy-L / L-Shape</option>
                         <option value="oval">Oval</option>
+                        <option value="round">Round</option>
                         <option value="kidney">Kidney</option>
+                        <option value="lazy-l">Lazy-L</option>
                         <option value="freeform">Freeform</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="poolLength">Pool Length (feet) <span class="required">*</span></label>
-                        <input type="text" id="poolLength" name="poolLength" placeholder="e.g., 20" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="poolWidth">Pool Width (feet) <span class="required">*</span></label>
-                        <input type="text" id="poolWidth" name="poolWidth" placeholder="e.g., 40" required>
-                    </div>
-                </div>
-
+            <!-- Row 6 -->
+            <div class="form-row">
                 <div class="form-group">
-                    <label for="poolType">Pool Type</label>
-                    <select id="poolType" name="poolType">
-                        <option value="">Select pool type</option>
-                        <option value="inground">In-Ground</option>
-                        <option value="aboveground">Above-Ground</option>
-                        <option value="semi-inground">Semi In-Ground</option>
+                    <label for="poolLength">Pool Length (ft) <span class="required">*</span></label>
+                    <input type="text" id="poolLength" name="poolLength" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="poolWidth">Pool Width (ft) <span class="required">*</span></label>
+                    <input type="text" id="poolWidth" name="poolWidth" required>
+                </div>
+            </div>
+
+            <!-- Row 7 -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="hasSteps">Does your pool have steps?</label>
+                    <select id="hasSteps" name="hasSteps">
+                        <option value="">Select an option</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="hasDivingBoard">Does your pool have a diving board?</label>
+                    <select id="hasDivingBoard" name="hasDivingBoard">
+                        <option value="">Select an option</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Cover Preferences -->
-            <div class="form-section">
-                <h2>Cover Preferences</h2>
-                
+            <!-- Row 8 -->
+            <div class="form-row">
                 <div class="form-group">
-                    <label for="coverType">Cover Type <span class="required">*</span></label>
-                    <select id="coverType" name="coverType" required>
-                        <option value="">Select cover type</option>
-                        <option value="safety-cover">Safety Cover</option>
-                        <option value="winter-cover">Winter Cover</option>
-                        <option value="solar-cover">Solar Cover</option>
-                        <option value="automatic-cover">Automatic Cover</option>
+                    <label for="hasSlide">Does your pool have a slide?</label>
+                    <select id="hasSlide" name="hasSlide">
+                        <option value="">Select an option</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
                     </select>
                 </div>
-
+                
                 <div class="form-group">
-                    <label>Cover Color</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="colorBlue" name="coverColors" value="blue">
-                            <label for="colorBlue">Blue</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="colorGreen" name="coverColors" value="green">
-                            <label for="colorGreen">Green</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="colorGray" name="coverColors" value="gray">
-                            <label for="colorGray">Gray</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="colorBlack" name="coverColors" value="black">
-                            <label for="colorBlack">Black</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="colorTan" name="coverColors" value="tan">
-                            <label for="colorTan">Tan</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="additionalFeatures">Additional Features or Special Requirements</label>
-                    <textarea id="additionalFeatures" name="additionalFeatures" placeholder="Please describe any special features, obstacles around the pool, steps, diving boards, etc."></textarea>
-                    <p class="info-text">Include details about steps, diving boards, rails, or any custom measurements</p>
+                    <label for="hasRails">Does your pool have rails?</label>
+                    <select id="hasRails" name="hasRails">
+                        <option value="">Select an option</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Additional Information -->
-            <div class="form-section">
-                <h2>Additional Information</h2>
-                
-                <div class="form-group">
-                    <label for="timeframe">When do you need the cover?</label>
-                    <select id="timeframe" name="timeframe">
-                        <option value="">Select timeframe</option>
-                        <option value="asap">As soon as possible</option>
-                        <option value="1-2weeks">1-2 weeks</option>
-                        <option value="3-4weeks">3-4 weeks</option>
-                        <option value="1-2months">1-2 months</option>
-                        <option value="flexible">Flexible</option>
-                    </select>
-                </div>
+            <!-- Full Width Fields -->
+            <div class="form-group">
+                <label for="additionalInfo">Additional Information</label>
+                <textarea id="additionalInfo" name="additionalInfo" placeholder="Please provide any additional details about your pool..."></textarea>
+            </div>
 
-                <div class="form-group">
-                    <label for="budget">Budget Range</label>
-                    <select id="budget" name="budget">
-                        <option value="">Select budget range</option>
-                        <option value="under-500">Under $500</option>
-                        <option value="500-1000">$500 - $1,000</option>
-                        <option value="1000-2000">$1,000 - $2,000</option>
-                        <option value="2000-3000">$2,000 - $3,000</option>
-                        <option value="over-3000">Over $3,000</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="comments">Additional Comments or Questions</label>
-                    <textarea id="comments" name="comments" placeholder="Any other information you'd like us to know..."></textarea>
-                </div>
+            <div class="form-group">
+                <label for="uploadPhotos">Upload Photos (Optional)</label>
+                <input type="file" id="uploadPhotos" name="uploadPhotos" multiple accept="image/*">
             </div>
 
             <button type="submit" class="submit-button">Submit Quote Request</button>
@@ -545,21 +521,10 @@
             const formData = new FormData(e.target);
             const data = {};
             
-            // Handle regular fields
+            // Handle all form fields
             for (let [key, value] of formData.entries()) {
-                if (key === 'coverColors') {
-                    if (!data.coverColors) {
-                        data.coverColors = [];
-                    }
-                    data.coverColors.push(value);
-                } else {
-                    data[key] = value;
-                }
+                data[key] = value;
             }
-
-            // Get checked color options
-            const colorCheckboxes = document.querySelectorAll('input[name="coverColors"]:checked');
-            data.coverColors = Array.from(colorCheckboxes).map(cb => cb.value);
 
             console.log('Quote Request Data:', data);
 
