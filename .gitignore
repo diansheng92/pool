@@ -46,3 +46,12 @@ package-lock.json
 # Logs
 *.log
 npm-debug.log*
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.webp
+images/
