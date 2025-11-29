@@ -32,6 +32,17 @@ Temporary Items
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Environment variables
+.env
+
+# Database
+*.db
+users.db
+
+# Node modules
+node_modules/
+package-lock.json
+
 # Logs
 *.log
 npm-debug.log*

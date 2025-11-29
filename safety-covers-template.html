@@ -1530,32 +1530,106 @@
             });
         });
         
+        // API Configuration
+        const API_URL = 'http://localhost:3000/api';
+        
+        // Helper function for API calls
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            
+            // Add token if exists
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                options.headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            // Add body for POST requests
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}${endpoint}`, options);
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Request failed');
+                }
+                
+                return result;
+            } catch (error) {
+                throw error;
+            }
+        }
+        
+        // Update UI after successful login
+        function updateUserUI(user) {
+            const userActions = document.querySelector('.user-actions span');
+            userActions.innerHTML = `Contact | <strong>${user.name}</strong> | Cart (0)`;
+        }
+        
+        // Check if user is already logged in on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                try {
+                    const result = await apiCall('/user');
+                    updateUserUI(result.user);
+                } catch (error) {
+                    // Token invalid, clear it
+                    localStorage.removeItem('authToken');
+                }
+            }
+        });
+        
         // Login form submission
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
+            const submitBtn = loginForm.querySelector('.form-submit');
             
-            // Simulate login (in production, this would call an API)
-            console.log('Login attempt:', { email, password });
-            alert(`Welcome back!\\n\\nLogged in as: ${email}`);
+            // Disable button during request
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Signing In...';
             
-            // Close modal and reset form
-            authModal.classList.remove('active');
-            loginForm.reset();
-            
-            // Update UI to show logged-in state
-            document.querySelector('.user-actions span').innerHTML = 
-                `Contact | <strong>${email.split('@')[0]}</strong> | Cart (0)`;
+            try {
+                const result = await apiCall('/login', 'POST', { email, password });
+                
+                // Store token
+                localStorage.setItem('authToken', result.token);
+                
+                // Show success
+                alert(`Welcome back, ${result.user.name}!`);
+                
+                // Update UI
+                updateUserUI(result.user);
+                
+                // Close modal and reset form
+                authModal.classList.remove('active');
+                loginForm.reset();
+                
+            } catch (error) {
+                alert(`Login failed: ${error.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign In';
+            }
         });
         
         // Signup form submission
-        signupForm.addEventListener('submit', (e) => {
+        signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('signup-name').value;
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const confirm = document.getElementById('signup-confirm').value;
+            const submitBtn = signupForm.querySelector('.form-submit');
             
             // Validate passwords match
             if (password !== confirm) {
@@ -1563,16 +1637,39 @@
                 return;
             }
             
-            // Simulate signup (in production, this would call an API)
-            console.log('Signup attempt:', { name, email, password });
-            alert(`Account created!\\n\\nWelcome, ${name}!\\n\\nYou can now sign in with: ${email}`);
+            // Disable button during request
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating Account...';
             
-            // Close modal and reset form
-            authModal.classList.remove('active');
-            signupForm.reset();
-            
-            // Switch to login tab
-            modalTabs[0].click();
+            try {
+                const result = await apiCall('/register', 'POST', { name, email, password });
+                
+                // Store token
+                localStorage.setItem('authToken', result.token);
+                
+                // Show success
+                alert(`Account created successfully!\\n\\nWelcome, ${name}!`);
+                
+                // Update UI
+                updateUserUI(result.user);
+                
+                // Close modal and reset form
+                authModal.classList.remove('active');
+                signupForm.reset();
+                
+            } catch (error) {
+                alert(`Registration failed: ${error.message}`);
+                
+                // If email already exists, suggest login
+                if (error.message.includes('already registered')) {
+                    if (confirm('This email is already registered. Would you like to sign in instead?')) {
+                        modalTabs[0].click(); // Switch to login tab
+                    }
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Account';
+            }
         });
     </script>
 </body>
