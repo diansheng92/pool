@@ -452,6 +452,177 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,102,204,0.3);
         }
+        
+        /* Login Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .login-modal {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+        
+        .modal-close:hover {
+            color: #333;
+        }
+        
+        .modal-tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .modal-tab {
+            flex: 1;
+            padding: 1.2rem;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .modal-tab:hover {
+            color: #0066cc;
+        }
+        
+        .modal-tab.active {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+        
+        .modal-content {
+            padding: 2rem;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+        
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .form-submit:hover {
+            background: #0052a3;
+            transform: translateY(-2px);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .form-footer a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .user-actions span {
+            cursor: default;
+        }
+        
+        .user-actions .auth-link {
+            cursor: pointer;
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .user-actions .auth-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -462,7 +633,7 @@
                 <strong>Five Star Pools</strong>
             </div>
             <div class="user-actions">
-                <span>Contact | Sign In/Up | Cart (0)</span>
+                <span>Contact | <a href="#" class="auth-link" id="auth-trigger">Sign In/Up</a> | Cart (0)</span>
             </div>
         </div>
         <div class="promo-banner">
@@ -907,7 +1078,61 @@
             <p style="margin-top: 0.5rem;">*Free shipping valid in Canada Only; Remote areas do not qualify for free shipping.</p>
         </div>
     </footer>
-    
+
+    <!-- Login/Signup Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="login-modal">
+            <button class="modal-close" id="closeModal">&times;</button>
+            
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="login">Sign In</button>
+                <button class="modal-tab" data-tab="signup">Sign Up</button>
+            </div>
+            
+            <div class="modal-content">
+                <!-- Login Form -->
+                <form class="auth-form active" id="loginForm">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="form-submit">Sign In</button>
+                    <div class="form-footer">
+                        <a href="#">Forgot your password?</a>
+                    </div>
+                </form>
+                
+                <!-- Signup Form -->
+                <form class="auth-form" id="signupForm">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm">Confirm Password</label>
+                        <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="form-submit">Create Account</button>
+                    <div class="form-footer">
+                        By signing up, you agree to our <a href="#">Terms of Service</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Configuration state
         const config = {
@@ -1248,6 +1473,106 @@
                     document.getElementById('cover-configurator').scrollIntoView({ behavior: 'smooth' });
                 }
             });
+        });
+        
+        // Login/Signup Modal Functionality
+        const authModal = document.getElementById('authModal');
+        const authTrigger = document.getElementById('auth-trigger');
+        const closeModal = document.getElementById('closeModal');
+        const modalTabs = document.querySelectorAll('.modal-tab');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        
+        // Open modal
+        authTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            authModal.classList.add('active');
+        });
+        
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            authModal.classList.remove('active');
+        });
+        
+        // Close on overlay click
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                authModal.classList.remove('active');
+            }
+        });
+        
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && authModal.classList.contains('active')) {
+                authModal.classList.remove('active');
+            }
+        });
+        
+        // Tab switching
+        modalTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab
+                modalTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding form
+                document.querySelectorAll('.auth-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+                
+                if (tabName === 'login') {
+                    loginForm.classList.add('active');
+                } else {
+                    signupForm.classList.add('active');
+                }
+            });
+        });
+        
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Simulate login (in production, this would call an API)
+            console.log('Login attempt:', { email, password });
+            alert(`Welcome back!\\n\\nLogged in as: ${email}`);
+            
+            // Close modal and reset form
+            authModal.classList.remove('active');
+            loginForm.reset();
+            
+            // Update UI to show logged-in state
+            document.querySelector('.user-actions span').innerHTML = 
+                `Contact | <strong>${email.split('@')[0]}</strong> | Cart (0)`;
+        });
+        
+        // Signup form submission
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirm = document.getElementById('signup-confirm').value;
+            
+            // Validate passwords match
+            if (password !== confirm) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Simulate signup (in production, this would call an API)
+            console.log('Signup attempt:', { name, email, password });
+            alert(`Account created!\\n\\nWelcome, ${name}!\\n\\nYou can now sign in with: ${email}`);
+            
+            // Close modal and reset form
+            authModal.classList.remove('active');
+            signupForm.reset();
+            
+            // Switch to login tab
+            modalTabs[0].click();
         });
     </script>
 </body>
