@@ -398,7 +398,8 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3000';
+        // Use global window.API_URL defined in config.js (fallback to localhost if not set)
+        const API_URL = window.API_URL || 'http://localhost:3000';
 
         // Check if user is logged in and update UI
         function updateUserUI() {
