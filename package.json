@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start:azure": "node server-azure.js",
+    "migrate:azure": "node migrate-sqlite-to-azure.js"
   },
   "keywords": ["pool", "safety-covers", "authentication"],
   "author": "Five Star Pools",
@@ -16,7 +18,8 @@
     "sqlite3": "^5.1.7",
     "jsonwebtoken": "^9.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "mssql": "^10.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

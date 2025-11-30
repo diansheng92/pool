@@ -456,23 +456,50 @@
         document.getElementById('customQuoteForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Collect form data
             const formData = new FormData(e.target);
-            const data = {};
-            
-            // Handle all form fields
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
+
+            // Collect checkbox values (order type)
+            const orderTypes = Array.from(document.querySelectorAll('input[name="poolShape"]:checked')).map(cb => cb.value);
+
+            // Collect measurements
+            const measurements = {};
+            const rows = document.querySelectorAll('#bulkMeasurementsBody tr');
+            rows.forEach(tr => {
+                const idx = tr.querySelector('.index-cell').textContent.trim();
+                const inputs = tr.querySelectorAll('input');
+                measurements['row' + idx] = { A: inputs[0].value.trim(), B: inputs[1].value.trim() };
+            });
+
+            const payload = {
+                company: formData.get('name'),
+                tagName: formData.get('email'),
+                poNumber: formData.get('phone'),
+                delivery: formData.get('delivery'),
+                sizeShape: formData.get('city'),
+                orderTypes,
+                gridSize: formData.get('gridSize'),
+                colour: formData.get('coverType'),
+                comments: document.getElementById('comments').value.trim(),
+                measurements
+            };
+
+            try {
+                const resp = await fetch(`${API_URL}/api/quote`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await resp.json();
+                if (!resp.ok) {
+                    alert('Error: ' + (result.error || 'Failed to submit quote'));
+                    return;
+                }
+                alert('Quote stored successfully. Reference ID: ' + result.id);
+                window.location.href = 'safety-covers-template.html';
+            } catch (err) {
+                console.error('Quote submit error:', err);
+                alert('Unexpected error submitting quote');
             }
-
-            console.log('Quote Request Data:', data);
-
-            // TODO: Send to backend API
-            // For now, just show success message
-            alert('Thank you for your quote request! We will contact you within 24 hours with a personalized quote.');
-            
-            // Optionally redirect back to main page
-            window.location.href = 'safety-covers-template.html';
         });
 
         // Build 60 rows * 2 columns (A,B) => 120 inputs total
