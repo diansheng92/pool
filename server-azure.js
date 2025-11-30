@@ -159,7 +159,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 // Create quote (no auth required initially)
-app.post('/api/quote', async (req, res) => {
+app.post('/api/quote', authenticateToken, async (req, res) => {
   try {
     const {
       company,
@@ -199,9 +199,9 @@ app.post('/api/quote', async (req, res) => {
 });
 
 // List quotes (dev only)
-app.get('/api/quotes', async (_req, res) => {
+app.get('/api/quotes', authenticateToken, async (req, res) => {
   try {
-    const result = await pool.request().query('SELECT TOP 100 id, company, tag_name, grid_size, colour, created_at FROM quotes ORDER BY id DESC');
+    const result = await pool.request().query('SELECT TOP 200 id, company, tag_name, grid_size, colour, created_at FROM quotes ORDER BY id DESC');
     res.json({ quotes: result.recordset });
   } catch (err) {
     console.error('Quotes list error:', err);

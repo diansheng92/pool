@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quotes Admin</title>
+  <style>
+    body {font-family:Arial,sans-serif;background:#f5f7fa;margin:0;padding:1.5rem;color:#222;}
+    h1 {margin-top:0;color:#0066cc;}
+    .login-warning {background:#fff3cd;color:#856404;padding:0.75rem 1rem;border:1px solid #ffeeba;border-radius:6px;margin-bottom:1rem;}
+    table {border-collapse:collapse;width:100%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.08);} 
+    th, td {padding:0.6rem 0.75rem;border:1px solid #ddd;font-size:0.85rem;} 
+    th {background:#0066cc;color:#fff;text-align:left;} 
+    tbody tr:nth-child(even){background:#f0f6fc;} 
+    .meta {font-size:0.75rem;color:#555;} 
+    .reload {margin:0.75rem 0 1.2rem;display:inline-block;background:#0066cc;color:#fff;padding:0.55rem 1rem;border-radius:5px;text-decoration:none;font-size:0.85rem;} 
+    .reload:hover {background:#0052a3;} 
+    .status {margin-left:0.75rem;font-size:0.75rem;color:#555;} 
+    .footer {margin-top:2rem;font-size:0.7rem;color:#888;text-align:center;} 
+  </style>
+</head>
+<body>
+  <h1>Stored Quotes</h1>
+  <div id="authStatus" class="login-warning" style="display:none;">You must sign in first. Go to the main site and log in; then return here.</div>
+  <a href="#" id="reload" class="reload">Reload Quotes</a><span id="status" class="status"></span>
+  <table id="quotesTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Company</th>
+        <th>Tag Name</th>
+        <th>Grid Size</th>
+        <th>Colour</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div class="footer">Quotes Admin View</div>
+<script>
+const API_URL = 'http://localhost:3000';
+const tbody = document.querySelector('#quotesTable tbody');
+const statusEl = document.getElementById('status');
+const authWarn = document.getElementById('authStatus');
+
+function fmtDate(dt){ try { return new Date(dt).toLocaleString(); } catch { return dt; } }
+
+async function loadQuotes(){
+  tbody.innerHTML='';
+  statusEl.textContent='Loading...';
+  const token = localStorage.getItem('token');
+  if(!token){ authWarn.style.display='block'; statusEl.textContent=''; return; }
+  authWarn.style.display='none';
+  try {
+    const resp = await fetch(`${API_URL}/api/quotes`, { headers: { 'Authorization': `Bearer ${token}` }});
+    const data = await resp.json();
+    if(!resp.ok){ statusEl.textContent='Error: '+(data.error||'Failed'); return; }
+    data.quotes.forEach(q => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${q.id}</td><td>${q.company}</td><td>${q.tag_name}</td><td>${q.grid_size||''}</td><td>${q.colour||''}</td><td>${fmtDate(q.created_at)}</td>`;
+      tbody.appendChild(tr);
+    });
+    statusEl.textContent = `Loaded ${data.quotes.length} quotes.`;
+  } catch (e){
+    console.error(e);
+    statusEl.textContent='Network error';
+  }
+}
+
+document.getElementById('reload').addEventListener('click', e => { e.preventDefault(); loadQuotes(); });
+loadQuotes();
+</script>
+</body>
+</html>

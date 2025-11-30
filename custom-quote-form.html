@@ -484,9 +484,13 @@
             };
 
             try {
+                const token = localStorage.getItem('token');
                 const resp = await fetch(`${API_URL}/api/quote`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                    },
                     body: JSON.stringify(payload)
                 });
                 const result = await resp.json();
