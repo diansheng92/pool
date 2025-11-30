@@ -75,6 +75,42 @@ app.use(express.static(__dirname));
 
 let pool; // SQL connection pool
 let lastAuthMode = 'none';
+let isReconnecting = false;
+
+// Helper to get or reconnect pool (handles AAD token expiry)
+async function getPool() {
+  if (pool && pool.connected) {
+    return pool;
+  }
+  
+  // Prevent multiple simultaneous reconnect attempts
+  if (isReconnecting) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return pool;
+  }
+  
+  isReconnecting = true;
+  try {
+    console.log('⚠ Pool not connected, attempting reconnect...');
+    if (pool) {
+      try { await pool.close(); } catch (e) { /* ignore */ }
+    }
+    const config = await buildSqlConfig();
+    if (!config) {
+      throw new Error('No SQL configuration available');
+    }
+    pool = await sql.connect(config);
+    lastAuthMode = useAadAuth ? 'AAD' : 'SQL';
+    console.log(`✓ Reconnected to Azure SQL (${lastAuthMode} auth)`);
+    return pool;
+  } catch (err) {
+    console.error('Reconnection failed:', err);
+    pool = null;
+    throw err;
+  } finally {
+    isReconnecting = false;
+  }
+}
 
 // Redirect root to homepage
 app.get('/', (req, res) => {
@@ -141,17 +177,17 @@ function authenticateToken(req, res, next) {
 
 // Register
 app.post('/api/register', async (req, res) => {
-  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) return res.status(400).json({ error: 'All fields are required' });
     if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
 
-    const existing = await pool.request().input('email', sql.NVarChar, email).query('SELECT email FROM users WHERE email = @email');
+    const db = await getPool();
+    const existing = await db.request().input('email', sql.NVarChar, email).query('SELECT email FROM users WHERE email = @email');
     if (existing.recordset.length) return res.status(409).json({ error: 'Email already registered' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const insert = await pool.request()
+    const insert = await db.request()
       .input('name', sql.NVarChar, name)
       .input('email', sql.NVarChar, email)
       .input('password', sql.NVarChar, hashedPassword)
@@ -178,12 +214,12 @@ app.post('/api/register', async (req, res) => {
 
 // Login
 app.post('/api/login', async (req, res) => {
-  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
 
-    const result = await pool.request().input('email', sql.NVarChar, email).query('SELECT * FROM users WHERE email = @email');
+    const db = await getPool();
+    const result = await db.request().input('email', sql.NVarChar, email).query('SELECT * FROM users WHERE email = @email');
     const user = result.recordset[0];
     if (!user) return res.status(401).json({ error: 'Invalid email or password' });
 
@@ -200,9 +236,9 @@ app.post('/api/login', async (req, res) => {
 
 // Current user
 app.get('/api/user', authenticateToken, async (req, res) => {
-  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
-    const result = await pool.request().input('id', sql.Int, req.user.id).query('SELECT id, name, email, created_at FROM users WHERE id = @id');
+    const db = await getPool();
+    const result = await db.request().input('id', sql.Int, req.user.id).query('SELECT id, name, email, created_at FROM users WHERE id = @id');
     const user = result.recordset[0];
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.json({ user });
@@ -214,9 +250,9 @@ app.get('/api/user', authenticateToken, async (req, res) => {
 
 // List users (dev only)
 app.get('/api/users', async (_req, res) => {
-  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
-    const result = await pool.request().query('SELECT id, name, email, created_at FROM users');
+    const db = await getPool();
+    const result = await db.request().query('SELECT id, name, email, created_at FROM users');
     res.json({ users: result.recordset });
   } catch (err) {
     console.error('List users error:', err);
@@ -271,7 +307,6 @@ app.get('/api/db-test', async (_req, res) => {
 
 // Create quote (no auth required initially)
 app.post('/api/quote', authenticateToken, async (req, res) => {
-  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const {
       company,
@@ -288,7 +323,8 @@ app.post('/api/quote', authenticateToken, async (req, res) => {
 
     if (!company || !tagName) return res.status(400).json({ error: 'company and tagName are required' });
 
-    const insert = await pool.request()
+    const db = await getPool();
+    const insert = await db.request()
       .input('company', sql.NVarChar, company)
       .input('tag_name', sql.NVarChar, tagName)
       .input('po_number', sql.NVarChar, poNumber || null)
@@ -312,9 +348,9 @@ app.post('/api/quote', authenticateToken, async (req, res) => {
 
 // List quotes (dev only)
 app.get('/api/quotes', authenticateToken, async (req, res) => {
-  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
-    const result = await pool.request().query('SELECT TOP 200 id, company, tag_name, grid_size, colour, created_at FROM quotes ORDER BY id DESC');
+    const db = await getPool();
+    const result = await db.request().query('SELECT TOP 200 id, company, tag_name, grid_size, colour, created_at FROM quotes ORDER BY id DESC');
     res.json({ quotes: result.recordset });
   } catch (err) {
     console.error('Quotes list error:', err);
