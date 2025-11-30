@@ -49,3 +49,10 @@ npm-debug.log*
 
 # Images
 IMG_0381*
+
+# Old/backup files (refactored)
+*.old.js
+*.old.html
+*.old.md
+migrate-sqlite-to-azure.js
+PUSH_TO_GITHUB.sh

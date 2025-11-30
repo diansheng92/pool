@@ -1,209 +1,137 @@
 # Five Star Pools - Safety Covers Website
 
-A responsive, interactive website for Five Star Pools safety cover configurator and product showcase with **real user authentication**.
+A modern, responsive pool safety cover configurator with user authentication and quote management.
 
-## 🌟 Features
+## 🚀 Quick Start
 
-- **Interactive Pool Shape Configurator**: Multi-step workflow for selecting pool covers
-- **Shape-Specific Logic**: Different workflows for different pool shapes (Rectangle, Lazy-L, Round, etc.)
-- **Real User Authentication**: Register, login, and session management with database storage
-- **Secure Backend**: JWT tokens, bcrypt password hashing, SQLite database
-- **Responsive Design**: Mobile-friendly layout using CSS Grid
-- **Multiple Page Variants**: 
-  - Main configurator with full workflow
-  - Simple gallery view
-  - Quick selector
-  - Product catalog
-  - Dedicated Lazy-L configurator
+### Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start server (uses SQLite by default)
+npm start
+
+# Server runs on http://localhost:3000
+# Open http://localhost:3000 in your browser
+```
+
+### Production (Azure)
+
+Automatically uses Azure SQL Database when these environment variables are set:
+- `AZURE_SQL_SERVER`
+- `AZURE_SQL_DATABASE`
+- `AZURE_SQL_AUTH=AAD` (for managed identity)
 
 ## 📁 Project Structure
 
 ```
 pool/
-├── index.html                      # Landing page with navigation
-├── safety-covers-template.html     # Main interactive configurator with auth
-├── simple-gallery.html             # Basic shape gallery
-├── quick-selector.html             # Single-click shape selector
-├── product-catalog.html            # E-commerce product listing
-├── lazy-l-configurator.html        # Dedicated L-shaped pool configurator
-├── server.js                       # Express backend API server
-├── package.json                    # Node.js dependencies
-├── .env                           # Environment variables (not in git)
-├── users.db                       # SQLite database (not in git)
-├── images/                        # All product and UI images
-├── BACKEND_README.md              # Backend setup documentation
-└── README.md
+├── server.js              # Main server file
+├── src/
+│   ├── config.js         # Configuration (auto-detects environment)
+│   ├── db/
+│   │   ├── connection.js # Database abstraction layer
+│   │   ├── azure-sql.js  # Azure SQL implementation
+│   │   └── sqlite.js     # SQLite implementation
+│   ├── routes/
+│   │   ├── auth.js       # Authentication routes
+│   │   └── quotes.js     # Quote management routes
+│   └── middleware/
+│       └── auth.js       # JWT authentication middleware
+├── public/
+│   ├── index.html        # Homepage
+│   ├── custom-quote-form.html
+│   ├── quotes-admin.html
+│   ├── config.js         # Frontend API config
+│   └── images/
+├── docs/                 # Documentation
+└── package.json
 ```
 
-## 🚀 Quick Start
+## 🔧 Environment Variables
 
-### Frontend Only (Static Site)
+Create a `.env` file:
 
-1. Clone the repository:
-```bash
-git clone https://github.com/diansheng92/pool.git
-cd pool
-```
-
-2. Start a local server:
-```bash
-python3 -m http.server 8000
-```
-
-3. Open your browser to:
-```
-http://localhost:8000/safety-covers-template.html
-```
-
-### Full Stack (With Authentication)
-
-1. **Install Backend Dependencies:**
-```bash
-npm install
-```
-
-2. **Configure Environment:**
-Edit `.env` file (or keep defaults for development):
 ```env
-JWT_SECRET=your-super-secret-jwt-key-change-this
+# Server
 PORT=3000
+JWT_SECRET=your-secret-key-change-in-production
+
+# Database (auto-detects: Azure SQL or SQLite)
+# For Azure SQL:
+AZURE_SQL_SERVER=your-server.database.windows.net
+AZURE_SQL_DATABASE=your-database
+AZURE_SQL_AUTH=AAD
+
+# For local SQLite (default):
+SQLITE_DB=./users.db
 ```
 
-3. **Start Backend Server:**
+## 🌟 Features
+
+- ✅ **Auto-detecting database** - Uses Azure SQL in production, SQLite locally
+- ✅ **Passwordless Azure AD** - Managed identity authentication
+- ✅ **User authentication** - Register, login with JWT tokens
+- ✅ **Quote management** - Submit and view pool cover quotes
+- ✅ **Responsive design** - Works on all devices
+- ✅ **Clean architecture** - Modular, maintainable codebase
+
+## 📚 API Endpoints
+
+```
+POST   /api/register      - Create new account
+POST   /api/login         - Login with email/password  
+GET    /api/user          - Get current user (protected)
+GET    /api/users         - List all users
+POST   /api/quote         - Submit quote (protected)
+GET    /api/quotes        - List quotes (protected)
+GET    /api/health        - Health check
+```
+
+## 🔒 Authentication
+
+All protected routes require a JWT token in the Authorization header:
+
+```bash
+Authorization: Bearer <your-jwt-token>
+```
+
+Tokens are valid for 7 days.
+
+## 🚢 Deployment
+
+### Azure App Service
+
+The app automatically detects Azure environment and uses:
+- Azure SQL Database with Managed Identity (passwordless)
+- Auto-reconnect for token expiry
+- Production-ready configuration
+
+Just deploy and set environment variables in Azure Portal.
+
+### Local Testing
+
 ```bash
 npm start
-```
-Backend runs on: `http://localhost:3000`
-
-4. **Start Frontend Server** (in a new terminal):
-```bash
-python3 -m http.server 8000
-```
-Frontend runs on: `http://localhost:8000`
-
-5. **Test Authentication:**
-- Open: `http://localhost:8000/safety-covers-template.html`
-- Click "Sign In/Up" in the header
-- Create an account and login!
-
-## 💡 Shape Workflows
-
-The configurator implements different workflows based on pool shape:
-
-- **Rectangle, Grecian, Roman**: Full 4-step workflow (Shape → Corner → Step → Size)
-- **Lazy-L**: Custom cover required (Shape → Send Measurements)
-- **Round, Oval**: Simplified workflow (Shape → Size, skips corner & step)
-- **Square-L**: 3-step workflow (Shape → Step → Size)
-
-## 🔐 Authentication Features
-
-- ✅ User registration with name, email, password
-- ✅ Secure login with JWT tokens
-- ✅ Password hashing with bcrypt (10 rounds)
-- ✅ Session persistence in localStorage
-- ✅ Auto-login on page reload
-- ✅ SQLite database for user storage
-- ✅ Protected API routes
-
-### API Endpoints
-
-```
-POST   /api/register  - Create new account
-POST   /api/login     - Login with email/password
-GET    /api/user      - Get current user (requires token)
-GET    /api/health    - Health check
+# Visit http://localhost:3000
 ```
 
-See [BACKEND_README.md](BACKEND_README.md) for full API documentation.
+## 📖 Documentation
 
-## 🎨 Technologies Used
+See `/docs` folder for:
+- Backend setup guide
+- Deployment instructions
+- API documentation
 
-### Frontend
-- Pure HTML5/CSS3/JavaScript (no frameworks)
-- CSS Grid for responsive layouts
-- Vanilla JavaScript for interactivity
-- SVG for pool shape diagrams
-- LocalStorage for session management
-- Fetch API for backend communication
+## 🛠 Technologies
 
-### Backend
-- Node.js + Express - API server
-- SQLite3 - Lightweight database
-- bcrypt - Password hashing
-- JWT - Authentication tokens
-- CORS - Cross-origin requests
-- dotenv - Environment variables
+- **Backend**: Node.js, Express
+- **Database**: Azure SQL / SQLite
+- **Auth**: JWT, bcrypt, Azure AD Managed Identity
+- **Frontend**: HTML, CSS, JavaScript
 
-## 📝 Customization
-
-### Modify Shape Workflows
-Edit the `shapeWorkflows` object in `safety-covers-template.html`:
-
-```javascript
-const shapeWorkflows = {
-    'rectangle': { hasCorner: true, hasStep: true, hasSize: true },
-    'lazy-l': { hasCorner: false, hasStep: false, hasSize: false, requiresCustom: true },
-    // ... add more shapes
-};
-```
-
-### Add New API Endpoints
-Edit `server.js`:
-
-```javascript
-app.post('/api/your-endpoint', async (req, res) => {
-    // Your logic here
-});
-```
-
-## 🌐 Live Demo
-
-### GitHub Pages (Frontend Only)
-- https://diansheng92.github.io/pool/safety-covers-template.html
-
-**Note:** GitHub Pages only serves static files. To use authentication, deploy the backend separately.
-
-### Deployment Options
-
-**Frontend:**
-- GitHub Pages (free, static only)
-- Netlify (free, static)
-- Vercel (free, static)
-
-**Backend:**
-- Heroku (free tier)
-- Railway (easy deployment)
-- DigitalOcean ($5/month)
-- AWS/Azure (enterprise)
-
-## 🔧 Development
-
-### View Database
-```bash
-sqlite3 users.db
-sqlite> SELECT * FROM users;
-sqlite> .quit
-```
-
-### Test API
-```bash
-# Health check
-curl http://localhost:3000/api/health
-
-# Register user
-curl -X POST http://localhost:3000/api/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test User","email":"test@test.com","password":"password123"}'
-```
-
-## 📄 License
+## 📝 License
 
 Private project for Five Star Pools
-
-## 🤝 Contributing
-
-This is a private repository. Contact the repository owner for access.
-
-## 📧 Support
-
-For questions or issues, please contact the development team.
