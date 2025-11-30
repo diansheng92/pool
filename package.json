@@ -2,9 +2,9 @@
   "name": "five-star-pools",
   "version": "1.0.0",
   "description": "Five Star Pools - Safety Cover Configurator with Authentication",
-  "main": "server.js",
+  "main": "server-azure.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server-azure.js",
     "dev": "nodemon server.js",
     "start:azure": "node server-azure.js",
     "migrate:azure": "node migrate-sqlite-to-azure.js"
