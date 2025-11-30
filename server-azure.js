@@ -168,7 +168,8 @@ app.get('/api/users', async (_req, res) => {
 
 // Health
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'OK', message: 'Azure SQL server running' });
+  const dbStatus = pool ? 'connected' : 'not connected';
+  res.json({ status: 'OK', message: 'Azure SQL server running', database: dbStatus });
 });
 
 // Create quote (no auth required initially)
