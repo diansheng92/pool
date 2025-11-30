@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 // Azure SQL configuration from environment variables
-const sqlConfig = {
+const sqlConfig = process.env.AZURE_SQL_SERVER ? {
   server: process.env.AZURE_SQL_SERVER,
   database: process.env.AZURE_SQL_DATABASE,
   user: process.env.AZURE_SQL_USER,
@@ -21,7 +21,7 @@ const sqlConfig = {
     encrypt: process.env.AZURE_SQL_ENCRYPT === 'false' ? false : true,
     trustServerCertificate: false
   }
-};
+} : null;
 
 // Middleware
 app.use(cors());
@@ -30,14 +30,23 @@ app.use(express.static(__dirname));
 
 let pool; // SQL connection pool
 
+// Redirect root to homepage
+app.get('/', (req, res) => {
+  res.redirect('/index.html');
+});
+
 async function initAzureSql() {
+  if (!sqlConfig) {
+    console.log('⚠ No Azure SQL configured - API endpoints will not work');
+    return;
+  }
   try {
     pool = await sql.connect(sqlConfig);
     console.log('✓ Connected to Azure SQL');
     await ensureSchema();
   } catch (err) {
     console.error('Azure SQL connection error:', err);
-    process.exit(1);
+    console.log('⚠ Running without database - API endpoints will not work');
   }
 }
 
@@ -84,6 +93,7 @@ function authenticateToken(req, res, next) {
 
 // Register
 app.post('/api/register', async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) return res.status(400).json({ error: 'All fields are required' });
@@ -110,6 +120,7 @@ app.post('/api/register', async (req, res) => {
 
 // Login
 app.post('/api/login', async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
@@ -131,6 +142,7 @@ app.post('/api/login', async (req, res) => {
 
 // Current user
 app.get('/api/user', authenticateToken, async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const result = await pool.request().input('id', sql.Int, req.user.id).query('SELECT id, name, email, created_at FROM users WHERE id = @id');
     const user = result.recordset[0];
@@ -144,6 +156,7 @@ app.get('/api/user', authenticateToken, async (req, res) => {
 
 // List users (dev only)
 app.get('/api/users', async (_req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const result = await pool.request().query('SELECT id, name, email, created_at FROM users');
     res.json({ users: result.recordset });
@@ -160,6 +173,7 @@ app.get('/api/health', (_req, res) => {
 
 // Create quote (no auth required initially)
 app.post('/api/quote', authenticateToken, async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const {
       company,
@@ -200,6 +214,7 @@ app.post('/api/quote', authenticateToken, async (req, res) => {
 
 // List quotes (dev only)
 app.get('/api/quotes', authenticateToken, async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const result = await pool.request().query('SELECT TOP 200 id, company, tag_name, grid_size, colour, created_at FROM quotes ORDER BY id DESC');
     res.json({ quotes: result.recordset });
