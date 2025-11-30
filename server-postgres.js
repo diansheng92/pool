@@ -20,6 +20,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// Redirect root to safety covers template
+app.get('/', (req, res) => {
+  res.redirect('/safety-covers-template.html');
+});
+
 // Initialize database tables
 async function initDatabase() {
   try {
