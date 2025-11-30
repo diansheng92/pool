@@ -4,24 +4,69 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const path = require('path');
 const sql = require('mssql');
+// Optional Azure AD Managed Identity support
+const useAadAuth = process.env.AZURE_SQL_AUTH === 'AAD';
+let identityCredential = null;
+if (useAadAuth) {
+  try {
+    // Lazy require so local dev without package still works
+    const { ManagedIdentityCredential } = require('@azure/identity');
+    identityCredential = new ManagedIdentityCredential();
+  } catch (e) {
+    console.error('⚠ @azure/identity not installed or failed to load. Run: npm install @azure/identity');
+  }
+}
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
-// Azure SQL configuration from environment variables
-const sqlConfig = process.env.AZURE_SQL_SERVER ? {
-  server: process.env.AZURE_SQL_SERVER,
-  database: process.env.AZURE_SQL_DATABASE,
-  user: process.env.AZURE_SQL_USER,
-  password: process.env.AZURE_SQL_PASSWORD,
-  port: 1433,
-  options: {
-    encrypt: process.env.AZURE_SQL_ENCRYPT === 'false' ? false : true,
-    trustServerCertificate: false
+// Build SQL configuration dynamically supporting SQL password auth or Azure AD Managed Identity
+async function buildSqlConfig() {
+  if (!process.env.AZURE_SQL_SERVER) return null;
+  const encrypt = process.env.AZURE_SQL_ENCRYPT === 'false' ? false : true;
+  if (useAadAuth) {
+    if (!identityCredential) {
+      console.error('⚠ Managed Identity credential unavailable; falling back to no DB');
+      return null;
+    }
+    try {
+      const token = await identityCredential.getToken('https://database.windows.net/.default');
+      if (!token) {
+        console.error('⚠ Failed to acquire AAD token for Azure SQL');
+        return null;
+      }
+      return {
+        server: process.env.AZURE_SQL_SERVER,
+        database: process.env.AZURE_SQL_DATABASE,
+        options: {
+          encrypt,
+          trustServerCertificate: false
+        },
+        authentication: {
+          type: 'azure-active-directory-access-token',
+          options: { token: token.token }
+        }
+      };
+    } catch (err) {
+      console.error('⚠ AAD token acquisition error:', err);
+      return null;
+    }
   }
-} : null;
+  // Default SQL username/password auth
+  return {
+    server: process.env.AZURE_SQL_SERVER,
+    database: process.env.AZURE_SQL_DATABASE,
+    user: process.env.AZURE_SQL_USER,
+    password: process.env.AZURE_SQL_PASSWORD,
+    port: 1433,
+    options: {
+      encrypt,
+      trustServerCertificate: false
+    }
+  };
+}
 
 // Middleware
 app.use(cors());
@@ -29,6 +74,7 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 let pool; // SQL connection pool
+let lastAuthMode = 'none';
 
 // Redirect root to homepage
 app.get('/', (req, res) => {
@@ -36,13 +82,15 @@ app.get('/', (req, res) => {
 });
 
 async function initAzureSql() {
-  if (!sqlConfig) {
-    console.log('⚠ No Azure SQL configured - API endpoints will not work');
+  const config = await buildSqlConfig();
+  if (!config) {
+    console.log('⚠ No Azure SQL configuration available - API endpoints will not work');
     return;
   }
   try {
-    pool = await sql.connect(sqlConfig);
-    console.log('✓ Connected to Azure SQL');
+    pool = await sql.connect(config);
+    lastAuthMode = useAadAuth ? 'AAD' : 'SQL';
+    console.log(`✓ Connected to Azure SQL (${lastAuthMode} auth)`);
     await ensureSchema();
   } catch (err) {
     console.error('Azure SQL connection error:', err);
@@ -169,7 +217,46 @@ app.get('/api/users', async (_req, res) => {
 // Health
 app.get('/api/health', (_req, res) => {
   const dbStatus = pool ? 'connected' : 'not connected';
-  res.json({ status: 'OK', message: 'Azure SQL server running', database: dbStatus });
+  res.json({ status: 'OK', message: 'Azure SQL server running', database: dbStatus, auth: pool ? lastAuthMode : 'none' });
+});
+
+// DB connection test - returns detailed error if connection fails
+app.get('/api/db-test', async (_req, res) => {
+  try {
+    const config = await buildSqlConfig();
+    if (!config) {
+      return res.status(500).json({ 
+        success: false, 
+        error: 'No SQL configuration available',
+        details: {
+          hasServer: !!process.env.AZURE_SQL_SERVER,
+          hasDatabase: !!process.env.AZURE_SQL_DATABASE,
+          authMode: useAadAuth ? 'AAD' : 'SQL',
+          hasUser: !!process.env.AZURE_SQL_USER,
+          hasPassword: !!process.env.AZURE_SQL_PASSWORD
+        }
+      });
+    }
+    
+    const testPool = await sql.connect(config);
+    const result = await testPool.request().query('SELECT 1 AS test');
+    await testPool.close();
+    
+    res.json({ 
+      success: true, 
+      message: 'Database connection successful',
+      authMode: useAadAuth ? 'AAD' : 'SQL',
+      result: result.recordset 
+    });
+  } catch (err) {
+    res.status(500).json({ 
+      success: false, 
+      error: err.message,
+      code: err.code,
+      details: err.toString(),
+      authMode: useAadAuth ? 'AAD' : 'SQL'
+    });
+  }
 });
 
 // Create quote (no auth required initially)
