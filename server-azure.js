@@ -162,7 +162,17 @@ app.post('/api/register', async (req, res) => {
     res.status(201).json({ message: 'Account created successfully', token, user: { id: newId, name, email } });
   } catch (err) {
     console.error('Register error:', err);
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error details:', {
+      message: err.message,
+      code: err.code,
+      number: err.number,
+      state: err.state,
+      class: err.class,
+      serverName: err.serverName,
+      procName: err.procName,
+      lineNumber: err.lineNumber
+    });
+    res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
 
