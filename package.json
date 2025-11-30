@@ -2,24 +2,29 @@
   "name": "five-star-pools",
   "version": "1.0.0",
   "description": "Five Star Pools - Safety Cover Configurator with Authentication",
-  "main": "server-azure.js",
+  "main": "server-postgres.js",
   "scripts": {
-    "start": "node server-azure.js",
+    "start": "node server-postgres.js",
     "dev": "nodemon server.js",
     "start:azure": "node server-azure.js",
     "migrate:azure": "node migrate-sqlite-to-azure.js"
   },
-  "keywords": ["pool", "safety-covers", "authentication"],
+  "keywords": [
+    "pool",
+    "safety-covers",
+    "authentication"
+  ],
   "author": "Five Star Pools",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
     "bcrypt": "^5.1.1",
-    "sqlite3": "^5.1.7",
-    "jsonwebtoken": "^9.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "mssql": "^10.0.1"
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mssql": "^10.0.1",
+    "pg": "^8.16.3",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
