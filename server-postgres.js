@@ -10,10 +10,10 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 // PostgreSQL connection pool (works with Supabase)
-const pool = new Pool({
+const pool = process.env.DATABASE_URL ? new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DB_SSL === 'false' ? false : { rejectUnauthorized: false }
-});
+}) : null;
 
 // Middleware
 app.use(cors());
@@ -27,6 +27,10 @@ app.get('/', (req, res) => {
 
 // Initialize database tables
 async function initDatabase() {
+  if (!pool) {
+    console.log('⚠ No database configured - API endpoints will not work');
+    return;
+  }
   try {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -72,6 +76,7 @@ function authenticateToken(req, res, next) {
 
 // Register
 app.post('/api/register', async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) return res.status(400).json({ error: 'All fields required' });
@@ -96,6 +101,7 @@ app.post('/api/register', async (req, res) => {
 
 // Login
 app.post('/api/login', async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
@@ -117,6 +123,7 @@ app.post('/api/login', async (req, res) => {
 
 // Get user
 app.get('/api/user', authenticateToken, async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const result = await pool.query('SELECT id, name, email, created_at FROM users WHERE id = $1', [req.user.id]);
     if (!result.rows[0]) return res.status(404).json({ error: 'User not found' });
@@ -128,6 +135,7 @@ app.get('/api/user', authenticateToken, async (req, res) => {
 
 // List users
 app.get('/api/users', async (_req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const result = await pool.query('SELECT id, name, email, created_at FROM users');
     res.json({ users: result.rows });
@@ -138,6 +146,7 @@ app.get('/api/users', async (_req, res) => {
 
 // Create quote
 app.post('/api/quote', authenticateToken, async (req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { company, tagName, poNumber, delivery, sizeShape, orderTypes, gridSize, colour, comments, measurements } = req.body;
     if (!company || !tagName) return res.status(400).json({ error: 'company and tagName required' });
@@ -157,6 +166,7 @@ app.post('/api/quote', authenticateToken, async (req, res) => {
 
 // List quotes
 app.get('/api/quotes', authenticateToken, async (_req, res) => {
+  if (!pool) return res.status(503).json({ error: 'Database not configured' });
   try {
     const result = await pool.query('SELECT id, company, tag_name, grid_size, colour, created_at FROM quotes ORDER BY id DESC LIMIT 200');
     res.json({ quotes: result.rows });
@@ -177,7 +187,7 @@ app.listen(PORT, async () => {
 });
 
 process.on('SIGINT', async () => {
-  await pool.end();
+  if (pool) await pool.end();
   console.log('\n✓ Database connection closed');
   process.exit(0);
 });
